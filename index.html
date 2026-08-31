@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欢迎来龙餐馆 · 电影介绍海报</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --deep-red: #6B1B1E;
+    --dim-red: #4A1314;
+    --charcoal: #1A1A1A;
+    --ink-black: #0C0A0A;
+    --aged-gold: #C49B6C;
+    --bone-white: #E8E0D0;
+    --ash-grey: #9A9088;
+    --warm-dark: #2A1F1A;
+    --fire-orange: #D4602A;
+    --bullet-brass: #8B7355;
+  }
+
+  body {
+    background: var(--ink-black);
+    font-family: 'Noto Serif SC', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .poster {
+    width: 640px;
+    min-height: 1380px;
+    position: relative;
+    background: var(--ink-black);
+    overflow: hidden;
+    box-shadow: 0 0 80px rgba(0,0,0,0.9);
+  }
+
+  /* === 背景层 === */
+  .bg-crack {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 20%, rgba(107,27,30,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 85% 80%, rgba(212,96,42,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 60% at 15% 60%, rgba(196,155,108,0.04) 0%, transparent 50%),
+      linear-gradient(180deg, #0C0A0A 0%, #140F0E 50%, #0C0A0A 100%);
+  }
+
+  .grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .cracks {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  /* === 顶部条 === */
+  .top-bar {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--ash-grey);
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(154,144,136,0.06);
+  }
+
+  .top-bar .left { display: flex; gap: 14px; align-items: center; }
+  .top-bar .dot { width: 5px; height: 5px; background: var(--deep-red); border-radius: 50%; }
+  .top-bar .right { color: var(--aged-gold); opacity: 0.4; font-size: 8px; }
+
+  /* === HERO 区 === */
+  .hero-section {
+    position: relative;
+    z-index: 2;
+    padding: 30px 32px 0;
+  }
+
+  .hero-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .hero-left {
+    flex: 1;
+  }
+
+  .hero-right {
+    width: 220px;
+    height: 220px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .hero-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.05) brightness(0.85) sepia(0.15);
+    border: 1px solid rgba(196,155,108,0.12);
+  }
+
+  .hero-right .img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 50%, rgba(12,10,10,0.4) 100%);
+    pointer-events: none;
+  }
+
+  .hero-right .img-caption {
+    position: absolute;
+    bottom: 6px;
+    left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.15em;
+    color: var(--aged-gold);
+    opacity: 0.5;
+    text-transform: uppercase;
+  }
+
+  /* 龙口衔子弹 SVG */
+  .dragon-symbol {
+    width: 160px;
+    height: 160px;
+    position: relative;
+    margin-bottom: 14px;
+  }
+
+  /* 片名 */
+  .film-title {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 900;
+    font-size: 68px;
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    color: var(--bone-white);
+    margin-bottom: 8px;
+  }
+
+  .film-title .small {
+    display: inline-block;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--deep-red);
+    opacity: 0.9;
+    margin-right: 4px;
+    vertical-align: top;
+    margin-top: 10px;
+  }
+
+  .film-title-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--ash-grey);
+    line-height: 1.4;
+  }
+
+  .arabic-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--aged-gold);
+    opacity: 0.45;
+    margin-top: 4px;
+  }
+
+  /* === 分割线 === */
+  .divider {
+    position: relative;
+    z-index: 5;
+    margin: 24px 32px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .divider .line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--deep-red) 0%, var(--aged-gold) 50%, transparent 100%);
+    opacity: 0.22;
+  }
+
+  .divider .code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--deep-red);
+    opacity: 0.45;
+    text-transform: uppercase;
+  }
+
+  /* === 剧情简介 === */
+  .synopsis {
+    position: relative;
+    z-index: 5;
+    padding: 16px 32px 0;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--deep-red);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .synopsis-text {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--bone-white);
+    opacity: 0.82;
+  }
+
+  .synopsis-text-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--ash-grey);
+    opacity: 0.5;
+    margin-top: 8px;
+  }
+
+  /* === 剧情节点图集 === */
+  .story-section {
+    position: relative;
+    z-index: 5;
+    padding: 24px 32px 0;
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .story-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .story-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    filter: contrast(1.05) brightness(0.8) sepia(0.12);
+    transition: filter 0.5s;
+    display: block;
+  }
+
+  .story-card .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(12,10,10,0.85) 100%);
+    pointer-events: none;
+  }
+
+  .story-card .label {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    color: var(--aged-gold);
+    opacity: 0.7;
+    text-transform: uppercase;
+  }
+
+  .story-card .caption {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 11px;
+    color: var(--bone-white);
+    line-height: 1.4;
+    opacity: 0.9;
+  }
+
+  .story-card .caption .en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 9px;
+    color: var(--ash-grey);
+    opacity: 0.6;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* === 角色卡 === */
+  .characters {
+    position: relative;
+    z-index: 5;
+    padding: 24px 32px 0;
+  }
+
+  .char-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .char-card {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .char-card .char-img {
+    width: 80px;
+    height: 100px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .char-card .char-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.05) brightness(0.82) sepia(0.12);
+  }
+
+  .char-card .char-info {
+    flex: 1;
+  }
+
+  .char-card .char-name {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--bone-white);
+    margin-bottom: 2px;
+  }
+
+  .char-card .char-actor {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 10px;
+    color: var(--aged-gold);
+    opacity: 0.6;
+    margin-bottom: 6px;
+  }
+
+  .char-card .char-desc {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--ash-grey);
+    opacity: 0.65;
+  }
+
+  /* === 关键道具 === */
+  .props-section {
+    position: relative;
+    z-index: 5;
+    padding: 24px 32px 0;
+  }
+
+  .props-grid {
+    display: flex;
+    gap: 14px;
+  }
+
+  .prop-card {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid rgba(107,27,30,0.2);
+    background: rgba(107,27,30,0.04);
+  }
+
+  .prop-card .prop-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+
+  .prop-card .prop-title {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--bone-white);
+    margin-bottom: 4px;
+  }
+
+  .prop-card .prop-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 10px;
+    line-height: 1.6;
+    color: var(--ash-grey);
+    opacity: 0.7;
+  }
+
+  /* === 演职员 === */
+  .credits {
+    position: relative;
+    z-index: 5;
+    padding: 20px 32px 0;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .credits .col { flex: 1; min-width: 100px; }
+
+  .credits .credit-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.25em;
+    color: var(--ash-grey);
+    opacity: 0.35;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .credits .credit-value {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 11px;
+    color: var(--bone-white);
+    opacity: 0.7;
+    line-height: 1.5;
+  }
+
+  .credits .credit-value .en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 9px;
+    color: var(--ash-grey);
+    opacity: 0.6;
+    display: block;
+  }
+
+  /* === 底部条 === */
+  .bottom-bar {
+    position: relative;
+    z-index: 10;
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    border-top: 1px solid rgba(154,144,136,0.06);
+  }
+
+  .bottom-left { display: flex; flex-direction: column; gap: 3px; }
+
+  .bottom-left .info-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--ash-grey);
+    opacity: 0.4;
+    text-transform: uppercase;
+  }
+
+  .bottom-left .info-line.gold { color: var(--aged-gold); opacity: 0.4; }
+
+  .bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bottom-right .tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--bone-white);
+    opacity: 0.6;
+    letter-spacing: 0.03em;
+  }
+
+  .bottom-right .rating {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--aged-gold);
+    opacity: 0.6;
+  }
+
+  .bottom-right .rating .star { font-size: 12px; }
+
+  /* === 动画 === */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .top-bar { animation: fadeIn 0.6s ease 0.1s both; }
+  .hero-section { animation: fadeIn 0.8s ease 0.2s both; }
+  .story-section { animation: fadeIn 0.8s ease 0.4s both; }
+  .characters { animation: fadeIn 0.8s ease 0.5s both; }
+  .props-section { animation: fadeIn 0.8s ease 0.6s both; }
+  .credits { animation: fadeIn 0.6s ease 0.7s both; }
+  .bottom-bar { animation: fadeIn 0.6s ease 0.8s both; }
+</style>
+</head>
+<body>
+
+<div class="poster">
+  <!-- 背景 -->
+  <div class="bg-crack"></div>
+  <div class="grain"></div>
+
+  <!-- 裂纹 -->
+  <svg class="cracks" viewBox="0 0 640 1380" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 100 50 L 120 120 L 90 180 L 130 260" stroke="#6B1B1E" stroke-width="0.5" opacity="0.4" fill="none"/>
+    <path d="M 520 80 L 550 160 L 510 220 L 560 300" stroke="#6B1B1E" stroke-width="0.4" opacity="0.3" fill="none"/>
+    <path d="M 200 700 L 180 780 L 220 860" stroke="#6B1B1E" stroke-width="0.3" opacity="0.2" fill="none"/>
+    <path d="M 450 1100 L 480 1180 L 440 1260" stroke="#6B1B1E" stroke-width="0.3" opacity="0.2" fill="none"/>
+    <path d="M 50 400 L 80 440 L 40 500" stroke="#C49B6C" stroke-width="0.3" opacity="0.12" fill="none"/>
+    <path d="M 600 500 L 570 550 L 610 610" stroke="#C49B6C" stroke-width="0.3" opacity="0.12" fill="none"/>
+  </svg>
+
+  <!-- 顶部条 -->
+  <div class="top-bar">
+    <div class="left">
+      <span class="dot"></span>
+      <span>2026 · 暑期档</span>
+      <span style="opacity:0.25">/</span>
+      <span>剧情 · 喜剧 · 战争</span>
+    </div>
+    <div class="right">文牧野导演作品 · 小人物三部曲</div>
+  </div>
+
+  <!-- HERO 区 -->
+  <div class="hero-section">
+    <div class="hero-layout">
+      <div class="hero-left">
+        <!-- 龙口衔子弹 SVG -->
+        <div class="dragon-symbol">
+          <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <!-- 龙身曲线 -->
+            <path d="M 130 40
+                     C 115 30, 95 28, 82 38
+                     C 70 48, 65 63, 72 76
+                     C 80 90, 90 94, 85 106
+                     C 80 118, 65 123, 50 120
+                     C 35 117, 28 107, 25 93"
+                  stroke="#C49B6C" stroke-width="1.2" opacity="0.3"
+                  stroke-linecap="round" fill="none"/>
+            <!-- 龙首 -->
+            <g opacity="0.45">
+              <path d="M 24 93 L 21 83 L 26 75 L 34 74 L 39 79 L 37 89 L 30 95 Z"
+                    fill="#6B1B1E" opacity="0.35" stroke="#6B1B1E" stroke-width="0.6"/>
+              <path d="M 30 75 L 27 67 L 25 62" stroke="#C49B6C" stroke-width="1" opacity="0.35" fill="none" stroke-linecap="round"/>
+              <path d="M 34 74 L 36 66 L 38 60" stroke="#C49B6C" stroke-width="1" opacity="0.35" fill="none" stroke-linecap="round"/>
+              <circle cx="31" cy="83" r="1.2" fill="#D4602A" opacity="0.5"/>
+              <path d="M 22 88 L 34 85" stroke="#1A1A1A" stroke-width="0.8" opacity="0.4"/>
+            </g>
+            <!-- 子弹 -->
+            <g opacity="0.6">
+              <ellipse cx="50" cy="88" rx="8" ry="2.5" fill="#8B7355" opacity="0.5"/>
+              <path d="M 57 85.8 C 61 86.5, 64 88, 64 88 C 64 88, 61 89.5, 57 90.2 L 57 85.8 Z"
+                    fill="#C49B6C" opacity="0.55"/>
+              <ellipse cx="44" cy="88" rx="1.5" ry="2.2" fill="#6B5340" opacity="0.45"/>
+              <ellipse cx="49" cy="87" rx="3.5" ry="0.7" fill="#D4B896" opacity="0.25"/>
+            </g>
+            <!-- 鳞片 -->
+            <g opacity="0.15">
+              <line x1="110" y1="35" x2="113" y2="32" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="100" y1="36" x2="103" y2="33" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="89" y1="40" x2="92" y2="37" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="79" y1="48" x2="82" y2="45" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="71" y1="60" x2="74" y2="57" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="70" y1="76" x2="73" y2="73" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="78" y1="90" x2="81" y2="87" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="82" y1="106" x2="85" y2="103" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="75" y1="118" x2="78" y2="115" stroke="#C49B6C" stroke-width="0.5"/>
+              <line x1="62" y1="122" x2="65" y2="119" stroke="#C49B6C" stroke-width="0.5"/>
+            </g>
+            <!-- 圆环 -->
+            <circle cx="80" cy="80" r="52" stroke="#6B1B1E" stroke-width="0.3" opacity="0.06" fill="none" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+
+        <!-- 片名 -->
+        <div class="film-title">
+          <span class="small">欢迎来</span>龙餐馆
+        </div>
+        <div class="film-title-en">
+          Once Upon a Time in the Middle East<br>
+          <span style="font-size:12px; opacity:0.5">A film by Wen Muye · 141 min · 2026</span>
+        </div>
+        <div class="arabic-title">مرحبا بكم ي مطعم التنين</div>
+      </div>
+
+      <div class="hero-right">
+        <img src="images/still1_thumb.jpg" alt="沈腾饰演徐福">
+        <div class="img-overlay"></div>
+        <div class="img-caption">沈腾 / SHEN TENG 饰 徐福</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分割线 -->
+  <div class="divider">
+    <span class="code">N° 001</span>
+    <div class="line"></div>
+    <span class="code" style="opacity:0.2">FIRE &amp; FOOD / SMOKE &amp; WAR</span>
+  </div>
+
+  <!-- 剧情简介 -->
+  <div class="synopsis">
+    <div class="section-label">故事 / SYNOPSIS</div>
+    <div class="synopsis-text">
+      东北厨师徐福为还债远赴中东巴哈塔，在龙餐馆掌勺谋生。
+      他与大堂经理马俊生一道，以地道中国味招揽八方食客。
+      战火突至，餐馆化为孤岛。灶台与子弹之间，
+      两个普通人将一间中餐厅变成了乱世中的避风港。
+      以"好好吃饭"为信念，他们守护了一群被战争遗弃的孩子。
+    </div>
+    <div class="synopsis-text-en">
+      A Chinese cook travels to the Middle East to pay off debt, only to find
+      himself running a restaurant in a war zone — where food becomes armor,
+      kindness becomes resistance, and an ordinary meal becomes a matter of life and death.
+    </div>
+  </div>
+
+  <!-- 剧情节点图集 -->
+  <div class="story-section">
+    <div class="section-label">关键情节 / KEY MOMENTS</div>
+    <div class="story-grid">
+      <!-- 图1: 后厨日常 -->
+      <div class="story-card">
+        <img src="images/still5_thumb.jpg" alt="好好吃饭">
+        <div class="overlay"></div>
+        <div class="label">01 · 好好吃饭</div>
+        <div class="caption">
+          灶台烟火，日常的尊严
+          <span class="en">Daily warmth before the storm</span>
+        </div>
+      </div>
+
+      <!-- 图2: 战火降临 -->
+      <div class="story-card">
+        <img src="images/still11_thumb.jpg" alt="战火中的餐馆">
+        <div class="overlay"></div>
+        <div class="label">02 · 战火骤至</div>
+        <div class="caption">
+          炮火撕裂了日常的烟火
+          <span class="en">War shatters the ordinary</span>
+        </div>
+      </div>
+
+      <!-- 图3: 烩饭 -->
+      <div class="story-card">
+        <img src="images/still8_thumb.jpg" alt="烩饭">
+        <div class="overlay"></div>
+        <div class="label">03 · 徐福烩饭</div>
+        <div class="caption">
+          "上不了台面"的一碗饭，写进菜单
+          <span class="en">A humble dish that became hope</span>
+        </div>
+      </div>
+
+      <!-- 图4: 龙抬头 -->
+      <div class="story-card">
+        <img src="images/still9_thumb.jpg" alt="龙抬头">
+        <div class="overlay"></div>
+        <div class="label">04 · 龙抬头</div>
+        <div class="caption">
+          压轴菜——东方巨龙走和平正道
+          <span class="en">The dragon rises — a path of peace</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 角色卡 -->
+  <div class="characters">
+    <div class="section-label">人物 / CHARACTERS</div>
+    <div class="char-grid">
+      <div class="char-card">
+        <div class="char-img">
+          <img src="images/still1_thumb.jpg" alt="徐福">
+        </div>
+        <div class="char-info">
+          <div class="char-name">徐福</div>
+          <div class="char-actor">沈腾 · Shen Teng</div>
+          <div class="char-desc">东北厨师，为还债远赴中东。从只想赚钱还债的普通人，到火线守护孤儿的"父亲"。</div>
+        </div>
+      </div>
+
+      <div class="char-card">
+        <div class="char-img">
+          <img src="images/still3_thumb.jpg" alt="马俊生">
+        </div>
+        <div class="char-info">
+          <div class="char-name">马俊生</div>
+          <div class="char-actor">蒋奇明 · Jiang Qiming</div>
+          <div class="char-desc">餐厅经理，八面玲珑却底色纯良。用发芽土豆救孩子，牺牲前留下一句"没糊弄过去"。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关键道具 -->
+  <div class="props-section">
+    <div class="section-label">核心意象 / KEY SYMBOLS</div>
+    <div class="props-grid">
+      <div class="prop-card">
+        <div class="prop-icon" style="color: var(--aged-gold);">🥔</div>
+        <div class="prop-title">发芽土豆</div>
+        <div class="prop-text">
+          和平年代是厨师必须丢弃的毒物，战乱中却成了拯救孩子的唯一武器。从"毒"到"救"，首尾呼应。
+        </div>
+      </div>
+      <div class="prop-card">
+        <div class="prop-icon" style="color: var(--deep-red);">🍜</div>
+        <div class="prop-title">徐福烩饭</div>
+        <div class="prop-text">
+          被自嘲"上不了台面"的便饭，最终写入龙餐馆菜单。用最简单的食材做出了"家的味道"。
+        </div>
+      </div>
+      <div class="prop-card">
+        <div class="prop-icon" style="color: var(--fire-orange);">🐉</div>
+        <div class="prop-title">龙口衔弹</div>
+        <div class="prop-text">
+          龙玩偶口衔子弹——含住未咽，吐又不敢。烟火与硝烟的符号碰撞，全片精神缩影。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 演职员 -->
+  <div class="credits">
+    <div class="col">
+      <div class="credit-label">导演 / DIRECTOR</div>
+      <div class="credit-value">
+        文牧野
+        <span class="en">Wen Muye</span>
+      </div>
+    </div>
+    <div class="col">
+      <div class="credit-label">主演 / STARRING</div>
+      <div class="credit-value">
+        沈腾 / 蒋奇明
+        <span class="en">Shen Teng · Jiang Qiming</span>
+      </div>
+    </div>
+    <div class="col">
+      <div class="credit-label">监制 / PRODUCER</div>
+      <div class="credit-value">
+        宁浩
+        <span class="en">Ning Hao</span>
+      </div>
+    </div>
+    <div class="col">
+      <div class="credit-label">类型 / GENRE</div>
+      <div class="credit-value">
+        剧情 / 战争
+        <span class="en">Drama · War</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部 -->
+  <div class="bottom-bar">
+    <div class="bottom-left">
+      <div class="info-line">上映 · 2026.08.11 · 中国大陆 · 141 min</div>
+      <div class="info-line gold">豆瓣 8.7 · 淘票票 9.9 · 票房 16亿+</div>
+    </div>
+    <div class="bottom-right">
+      <span class="tag">能吃饭，就别打仗</span>
+      <span class="rating"><span class="star">★</span>8.7</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
