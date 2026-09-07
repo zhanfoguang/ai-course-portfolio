@@ -1,1755 +1,476 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>欢迎来龙餐馆｜电影宣传页</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0a0807;
-      --bg-2: #0e0b09;
-      --surface: #151009;
-      --red: #c23b2e;
-      --red-deep: #6b1b1e;
-      --gold: #c49b6c;
-      --bone: #ede4d3;
-      --muted: #a79c8e;
-      --line: rgba(237, 228, 211, .14);
-      --display: Impact, "Arial Black", "PingFang SC", "Microsoft YaHei", sans-serif;
-      --display-cn: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-      --serif: "Noto Serif SC", "Songti SC", Georgia, serif;
-      --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--bone);
-      font-family: var(--display-cn);
-      overflow-x: hidden;
-    }
-
-    body.intro-running { overflow: hidden; }
-
-    img { background: #0c0e12; }
-
-    /* ============ 动能开场 ============ */
-    .kinetic-intro {
-      align-items: center;
-      background: var(--bg);
-      display: flex;
-      inset: 0;
-      justify-content: center;
-      overflow: hidden;
-      position: fixed;
-      z-index: 20;
-    }
-
-    .kinetic-intro.is-finished { display: none; }
-
-    .kinetic-reveal { inset: 0; overflow: hidden; position: absolute; }
-
-    .kinetic-stage {
-      display: grid;
-      gap: .06em;
-      left: 50%;
-      min-width: 210vw;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      transform-origin: center;
-    }
-
-    .kinetic-intro.is-exiting .kinetic-stage {
-      animation: kineticExit .7s cubic-bezier(.22, 1, .36, 1) both;
-    }
-
-    .kinetic-line {
-      color: var(--bone);
-      font-family: var(--display);
-      font-size: clamp(3.2rem, 10.5vw, 11.5rem);
-      font-weight: 400;
-      letter-spacing: .04em;
-      line-height: .8;
-      margin: 0;
-      opacity: 0;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .kinetic-line:nth-child(1) { animation: kineticIn .58s cubic-bezier(.22, 1, .36, 1) .05s both; }
-    .kinetic-line:nth-child(2) { animation: kineticIn .58s cubic-bezier(.22, 1, .36, 1) .16s both; color: var(--red); }
-    .kinetic-line:nth-child(3) { animation: kineticIn .58s cubic-bezier(.22, 1, .36, 1) .27s both; color: var(--red); }
-    .kinetic-line:nth-child(4) { animation: kineticIn .58s cubic-bezier(.22, 1, .36, 1) .38s both; color: var(--gold); }
-    .kinetic-line:nth-child(5) { animation: kineticIn .58s cubic-bezier(.22, 1, .36, 1) .49s both; color: var(--bone); }
-
-    @keyframes kineticIn {
-      from { opacity: 0; transform: translate3d(0, 62%, 0) skewY(4deg); }
-      to { opacity: 1; transform: none; }
-    }
-
-    @keyframes kineticExit {
-      to { opacity: 0; transform: translate(-50%, -50%) scale(.94); }
-    }
-
-    /* ============ HERO ============ */
-    .hero {
-      box-sizing: border-box;
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      min-height: 100svh;
-      overflow: hidden;
-      padding: clamp(1rem, 3vw, 2.75rem) clamp(.5rem, .75vw, 1rem);
-      position: relative;
-    }
-
-    .hero::before {
-      background:
-        radial-gradient(circle at 22% 46%, rgba(107, 27, 30, .3), transparent 36%),
-        radial-gradient(circle at 75% 20%, rgba(194, 155, 108, .1), transparent 30%),
-        linear-gradient(116deg, transparent 0 69%, rgba(194, 59, 46, .12) 69.15% 69.45%, transparent 69.6%);
-      content: "";
-      inset: 0;
-      pointer-events: none;
-      position: absolute;
-    }
-
-    .hero::after {
-      border-left: 1px solid rgba(237, 228, 211, .12);
-      content: "";
-      height: 32vh;
-      left: 61%;
-      position: absolute;
-      top: 0;
-      transform: skewX(-16deg);
-    }
-
-    .hero-art {
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      min-width: 0;
-      padding: 0 clamp(.5rem, 2vw, 2rem) 0 0;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-art::before {
-      background: var(--red);
-      box-shadow: 0 0 34px rgba(194, 59, 46, .32);
-      content: "";
-      height: 38%;
-      left: 8%;
-      position: absolute;
-      top: 12%;
-      transform: skewY(-13deg);
-      width: 5px;
-    }
-
-    .hero-poster {
-      aspect-ratio: 2 / 3;
-      background: var(--surface);
-      box-shadow: 0 2rem 5rem rgba(0, 0, 0, .62), 0 0 0 1px rgba(237, 228, 211, .16);
-      display: block;
-      height: min(88svh, 840px);
-      max-width: 100%;
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-poster-bg {
-      background:
-        radial-gradient(ellipse 80% 50% at 50% 18%, rgba(107, 27, 30, .5) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 85% 75%, rgba(212, 96, 42, .08) 0%, transparent 50%),
-        linear-gradient(180deg, #0c0a0a 0%, #150f0e 52%, #0c0a0a 100%);
-      inset: 0;
-      position: absolute;
-    }
-
-    .hero-poster-photo {
-      bottom: 0;
-      clip-path: polygon(0 32%, 100% 0, 100% 100%, 0 100%);
-      filter: contrast(1.08) brightness(.8) sepia(.14);
-      height: 44%;
-      left: 0;
-      position: absolute;
-      right: 0;
-    }
-
-    .hero-poster-photo img {
-      display: block;
-      height: 100%;
-      object-fit: cover;
-      width: 100%;
-    }
-
-    .hero-poster-photo::after {
-      background: linear-gradient(180deg, #100b0b 0%, rgba(16, 11, 11, .18) 34%, rgba(12, 10, 10, .62) 100%);
-      content: "";
-      inset: 0;
-      position: absolute;
-    }
-
-    .hero-poster-symbol {
-      display: block;
-      left: 50%;
-      position: absolute;
-      top: 12%;
-      transform: translateX(-50%);
-      width: 62%;
-    }
-
-    .hero-poster-mark {
-      font-family: var(--mono);
-      font-size: .5rem;
-      left: 1rem;
-      letter-spacing: .28em;
-      opacity: .7;
-      position: absolute;
-      top: 1.1rem;
-      color: var(--muted);
-    }
-
-    .hero-poster-mark b { color: var(--red); font-weight: 400; }
-
-    .hero-poster-cn {
-      font-family: var(--display-cn);
-      font-size: clamp(1.7rem, 3.4svh, 2.6rem);
-      font-weight: 900;
-      letter-spacing: .34em;
-      line-height: 1.14;
-      position: absolute;
-      right: 1.1rem;
-      text-align: center;
-      top: 14%;
-      writing-mode: vertical-rl;
-      color: var(--bone);
-      text-shadow: 0 .12em .8em rgba(0, 0, 0, .9);
-    }
-
-    .hero-poster-ar {
-      bottom: .9rem;
-      color: var(--gold);
-      direction: rtl;
-      font-family: var(--serif);
-      font-size: .72rem;
-      letter-spacing: .12em;
-      opacity: .65;
-      position: absolute;
-      right: 1.05rem;
-    }
-
-    .hero-poster-en {
-      bottom: 1rem;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: .5rem;
-      left: 1rem;
-      letter-spacing: .22em;
-      opacity: .8;
-      position: absolute;
-      text-transform: uppercase;
-    }
-
-    .hero-copy {
-      align-self: center;
-      min-width: 0;
-      padding: clamp(1rem, 2.5vw, 3rem) 0 clamp(1rem, 2.5vw, 3rem) clamp(.5rem, 2vw, 2rem);
-      position: relative;
-      z-index: 2;
-    }
-
-    .eyebrow {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: clamp(.74rem, 1.05vw, 1rem);
-      letter-spacing: .2em;
-      margin: 0 0 clamp(1rem, 2.5vh, 1.5rem);
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      background: var(--red);
-      content: "";
-      display: inline-block;
-      height: .62em;
-      margin-right: .65em;
-      transform: skewX(-18deg);
-      width: 1.8em;
-    }
-
-    .hero-title {
-      color: var(--bone);
-      font-family: var(--display-cn);
-      font-size: clamp(3.1rem, 6.8vw, 8.2rem);
-      font-weight: 900;
-      letter-spacing: .02em;
-      line-height: .86;
-      margin: 0;
-      max-width: 6.2em;
-      text-wrap: balance;
-    }
-
-    .hero-title [data-motion-line] {
-      display: block;
-      white-space: nowrap;
-    }
-
-    .hero-title [data-motion-line]:first-child {
-      color: var(--bone);
-      font-size: .62em;
-      letter-spacing: .22em;
-    }
-
-    .hero-title [data-motion-line]:last-child {
-      color: var(--red);
-      font-size: 1em;
-      letter-spacing: .06em;
-      margin-top: .1em;
-    }
-
-    .motion-glyph {
-      display: inline-block;
-      margin-right: .06em;
-      will-change: opacity, transform;
-    }
-
-    .motion-glyph:last-child { margin-right: 0; }
-
-    .is-motion-ready .motion-glyph {
-      opacity: 0;
-      transform: translate3d(0, .58em, 0) rotate(2deg);
-      transition:
-        opacity 620ms cubic-bezier(.22, 1, .36, 1),
-        transform 760ms cubic-bezier(.16, 1, .3, 1);
-      transition-delay: calc(var(--motion-index) * 90ms);
-    }
-
-    .is-motion-ready.is-visible .motion-glyph {
-      opacity: 1;
-      transform: translate3d(0, 0, 0) rotate(0deg);
-    }
-
-    .hero-title-en {
-      color: var(--gold);
-      font-family: var(--display);
-      font-size: clamp(.8rem, 1.2vw, 1.05rem);
-      letter-spacing: .3em;
-      margin: clamp(1rem, 2.4vh, 1.6rem) 0 0;
-      text-transform: uppercase;
-    }
-
-    .hero-tagline {
-      color: #c9c0b2;
-      font-family: var(--serif);
-      font-size: clamp(.95rem, 1.15vw, 1.1rem);
-      line-height: 1.85;
-      margin: 0;
-      max-width: min(100%, 30rem);
-    }
-
-    .hero-release {
-      align-items: flex-start;
-      display: flex;
-      flex-direction: column;
-      font-family: var(--display);
-      margin: clamp(1.4rem, 4vh, 2.5rem) 0 0;
-    }
-
-    .hero-release span {
-      color: var(--bone);
-      font-size: clamp(1.4rem, 2.9vw, 2.6rem);
-      letter-spacing: .08em;
-    }
-
-    .hero-release small {
-      color: var(--red);
-      font-size: .72rem;
-      letter-spacing: .2em;
-    }
-
-    .hero-scores {
-      display: flex;
-      gap: clamp(1rem, 2.4vw, 2.2rem);
-      margin: clamp(1.1rem, 3vh, 1.8rem) 0 0;
-    }
-
-    .hero-scores div { display: grid; }
-
-    .hero-scores b {
-      color: var(--gold);
-      font-family: var(--display);
-      font-size: clamp(1.15rem, 1.9vw, 1.7rem);
-      font-weight: 400;
-      letter-spacing: .04em;
-    }
-
-    .hero-scores i {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: .62rem;
-      font-style: normal;
-      letter-spacing: .2em;
-      margin-top: .3em;
-      text-transform: uppercase;
-    }
-
-    /* ============ 反射桥 ============ */
-    .reflection-bridge {
-      background: #07080b;
-      background: #0b0908;
-      height: 170vh;
-      position: relative;
-    }
-
-    .reflection-sticky {
-      height: 100svh;
-      overflow: hidden;
-      position: sticky;
-      top: 0;
-    }
-
-    .reflection-sticky::before {
-      background: linear-gradient(180deg, var(--bg) 0, transparent 20%, transparent 74%, var(--bg) 100%);
-      content: "";
-      inset: 0;
-      pointer-events: none;
-      position: absolute;
-      z-index: 3;
-    }
-
-    .reflection-caption {
-      display: flex;
-      flex-direction: column;
-      left: clamp(1.25rem, 5vw, 5rem);
-      position: absolute;
-      top: clamp(2rem, 7vh, 5rem);
-      z-index: 4;
-    }
-
-    .reflection-caption span {
-      color: var(--red);
-      font-family: var(--display);
-      font-size: clamp(1rem, 1.7vw, 1.6rem);
-      letter-spacing: .2em;
-    }
-
-    .reflection-caption strong {
-      font-family: var(--display-cn);
-      font-size: clamp(1.7rem, 3.6vw, 3.8rem);
-      font-weight: 900;
-      margin-top: .16em;
-    }
-
-    .reflection-viewport {
-      inset: 0;
-      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-      overflow: hidden;
-      position: absolute;
-    }
-
-    .reflection-rail {
-      display: flex;
-      gap: clamp(1rem, 2vw, 2rem);
-      left: 8vw;
-      position: absolute;
-      transform-origin: 50% 50%;
-      will-change: transform;
-    }
-
-    .reflection-rail figure {
-      background: var(--surface);
-      flex: 0 0 auto;
-      margin: 0;
-      overflow: hidden;
-    }
-
-    .reflection-rail figure:first-child {
-      aspect-ratio: 2.5 / 1;
-      width: 92vw;
-    }
-
-    .reflection-rail figure:last-child {
-      aspect-ratio: 2 / 3;
-      width: 34vw;
-    }
-
-    .reflection-rail img {
-      display: block;
-      height: 100%;
-      object-fit: cover;
-      width: 100%;
-    }
-
-    .reflection-primary { top: 21vh; }
-
-    .reflection-mirror {
-      filter: saturate(.72) blur(.35px);
-      opacity: .2;
-      top: 55vh;
-      transform: scaleY(-1);
-    }
-
-    /* ============ 通用卡组 ============ */
-    .deck {
-      --ease: cubic-bezier(.22, 1, .36, 1);
-      box-sizing: border-box;
-      display: grid;
-      gap: clamp(1rem, 2vw, 2rem);
-      grid-template-columns: minmax(0, 1.3fr) minmax(18rem, .7fr);
-      min-height: 100svh;
-      padding: clamp(3.5rem, 9vw, 8rem) clamp(1rem, 8vw, 9rem);
-      position: relative;
-    }
-
-    .deck-heading, .deck-stage, .deck-copy, .deck-controls { position: relative; z-index: 1; }
-
-    .deck-heading { grid-column: 1 / -1; }
-
-    .deck-heading h2 {
-      font-family: var(--display-cn);
-      font-size: clamp(2rem, 4vw, 4.6rem);
-      font-weight: 900;
-      margin: -.35rem 0 .5rem;
-    }
-
-    .deck-heading > p:last-child {
-      color: #c8bfb2;
-      font-family: var(--serif);
-      line-height: 1.7;
-      margin: 0;
-    }
-
-    .deck-stage {
-      aspect-ratio: 1.38 / 1;
-      background: #111;
-      box-shadow: 0 2rem 4rem rgba(0, 0, 0, .55), 0 0 0 1px rgba(237, 228, 211, .15);
-      overflow: hidden;
-      perspective: 1200px;
-      touch-action: pan-y;
-    }
-
-    .deck-layer { inset: 0; position: absolute; transform-origin: 50% 50%; }
-    .deck-layer.is-next { opacity: 0; }
-    .deck-layer img { display: block; height: 100%; object-fit: cover; width: 100%; }
-    .deck-stage-shade {
-      background: linear-gradient(0deg, rgba(0, 0, 0, .42), transparent 52%);
-      inset: 0;
-      pointer-events: none;
-      position: absolute;
-      z-index: 2;
-    }
-
-    .deck.is-forward .deck-layer.is-current { animation: deckOut .72s var(--ease) both; }
-    .deck.is-forward .deck-layer.is-next { animation: deckIn .72s var(--ease) both; }
-    .deck.is-reverse .deck-layer.is-current { animation: deckOutReverse .72s var(--ease) both; }
-    .deck.is-reverse .deck-layer.is-next { animation: deckInReverse .72s var(--ease) both; }
-
-    @keyframes deckOut {
-      to { filter: blur(6px); opacity: .15; transform: perspective(1200px) translateX(-18%) translateZ(-180px) rotateY(-38deg); }
-    }
-    @keyframes deckIn {
-      from { filter: blur(8px); opacity: 0; transform: perspective(1200px) translateX(28%) translateZ(-260px) rotateY(54deg); }
-      to { filter: none; opacity: 1; transform: none; }
-    }
-    @keyframes deckOutReverse {
-      to { filter: blur(6px); opacity: .15; transform: perspective(1200px) translateX(18%) translateZ(-180px) rotateY(38deg); }
-    }
-    @keyframes deckInReverse {
-      from { filter: blur(8px); opacity: 0; transform: perspective(1200px) translateX(-28%) translateZ(-260px) rotateY(-54deg); }
-      to { filter: none; opacity: 1; transform: none; }
-    }
-    @keyframes deckCopyIn {
-      from { opacity: 0; transform: translate3d(0, 1rem, 0); }
-      to { opacity: 1; transform: none; }
-    }
-
-    .deck-copy { align-self: center; max-width: 36rem; }
-
-    .deck.is-copy-entering .deck-copy { animation: deckCopyIn .48s var(--ease) .18s both; }
-
-    .deck-scene, .deck-credit, .deck-role {
-      font-family: var(--mono);
-      letter-spacing: .16em;
-    }
-
-    .deck-scene { color: var(--red); font-size: .92rem; margin: 0 0 .75rem; text-transform: uppercase; }
-    .deck-name {
-      font-family: var(--display-cn);
-      font-size: clamp(2.8rem, 6.4vw, 6.6rem);
-      font-weight: 900;
-      letter-spacing: .02em;
-      line-height: .9;
-      margin: 0;
-    }
-    .deck-credit { color: #d2c9bc; font-size: clamp(.85rem, 1.3vw, 1.2rem); margin: 1.15rem 0 .5rem; }
-    .deck-role { color: var(--red); font-size: .82rem; margin: 0; text-transform: uppercase; }
-    .deck-visual-note { color: #96897b; font-size: .76rem; letter-spacing: .08em; margin: .72rem 0 0; }
-    .deck-visual-note span { color: #d7cfc1; }
-    .deck-line { color: #d3c9bd; font-family: var(--serif); font-size: clamp(1rem, 1.35vw, 1.25rem); line-height: 1.75; margin: 1.6rem 0 0; max-width: 27rem; }
-
-    .deck-controls {
-      align-items: center;
-      display: flex;
-      gap: .85rem;
-      grid-column: 1 / -1;
-      justify-content: center;
-    }
-
-    .deck-controls button {
-      background: transparent;
-      border: 1px solid rgba(237, 228, 211, .36);
-      color: var(--bone);
-      cursor: pointer;
-      font: 400 .78rem var(--display-cn);
-      letter-spacing: .08em;
-      min-height: 2.7rem;
-      padding: .55rem .9rem;
-    }
-
-    .deck-controls button:hover:not(:disabled) { border-color: var(--red); color: #fff; }
-    .deck-controls button:disabled { color: rgba(237, 228, 211, .36); cursor: not-allowed; }
-    .deck-controls button:focus-visible, .deck:focus-visible { outline: 3px solid var(--red); outline-offset: 5px; }
-
-    .deck-index {
-      font-family: var(--display);
-      font-size: 1.25rem;
-      letter-spacing: .12em;
-      margin: 0 .4rem;
-      min-width: 4.5rem;
-      text-align: center;
-    }
-
-    .deck-dots { display: flex; gap: .55rem; }
-
-    .deck-dots button {
-      background: transparent;
-      border: 0;
-      border-radius: 50%;
-      height: 1.5rem;
-      min-height: 1.5rem;
-      padding: 0;
-      position: relative;
-      width: 1.5rem;
-    }
-
-    .deck-dots button::before {
-      background: transparent;
-      border: 1px solid rgba(237, 228, 211, .5);
-      border-radius: 50%;
-      content: "";
-      height: .62rem;
-      left: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      transition: background .2s ease, border-color .2s ease, transform .2s ease;
-      width: .62rem;
-    }
-
-    .deck-dots button:hover::before { border-color: var(--red); }
-
-    .deck-dots button.is-active::before {
-      background: var(--red);
-      border-color: var(--red);
-      transform: translate(-50%, -50%) scale(1.22);
-    }
-
-    .deck-progress-track {
-      background: rgba(237, 228, 211, .18);
-      height: 2px;
-      max-width: 14rem;
-      min-width: 7rem;
-      overflow: hidden;
-      width: 20vw;
-    }
-
-    .deck-progress-track span {
-      background: var(--red);
-      display: block;
-      height: 100%;
-      transform-origin: left center;
-      transition: width .32s var(--ease);
-      width: 25%;
-    }
-
-    /* cast / story 差异化底色 */
-    .cast-deck::before {
-      background: linear-gradient(105deg, rgba(107, 27, 30, .16), transparent 35%), #090a0f;
-      background: linear-gradient(105deg, rgba(107, 27, 30, .18), transparent 38%), #0d0a09;
-      content: "";
-      inset: 0;
-      pointer-events: none;
-      position: absolute;
-    }
-
-    .story-deck::before {
-      background: radial-gradient(circle at 76% 22%, rgba(196, 155, 108, .1), transparent 33%), linear-gradient(122deg, #0b0908, #060404 62%, #150a0a);
-      content: "";
-      inset: 0;
-      pointer-events: none;
-      position: absolute;
-    }
-
-    .story-deck::after {
-      border: 1px solid rgba(194, 59, 46, .25);
-      content: "";
-      height: 34vw;
-      max-height: 30rem;
-      position: absolute;
-      right: -11vw;
-      top: 12%;
-      transform: rotate(32deg);
-      width: 34vw;
-    }
-
-    /* ============ 核心意象：粘性标题轨 ============ */
-    .symbol-handoff {
-      background: linear-gradient(135deg, #0b0908, #170c0b 68%, #09080a);
-      box-sizing: border-box;
-      min-height: min(72svh, 680px);
-      position: relative;
-    }
-
-    .symbol-heading {
-      align-content: center;
-      box-sizing: border-box;
-      min-height: min(72svh, 680px);
-      padding: clamp(3.5rem, 10vw, 9rem);
-      position: relative;
-    }
-
-    .symbol-heading::before {
-      background: var(--red);
-      content: "";
-      height: 42%;
-      left: clamp(1rem, 7vw, 8rem);
-      position: absolute;
-      top: 29%;
-      transform: skewX(-18deg);
-      width: 4px;
-    }
-
-    .symbol-heading .eyebrow, .symbol-heading h2, .symbol-heading > p:last-child {
-      margin-left: clamp(1.2rem, 5vw, 5rem);
-      position: relative;
-    }
-
-    .symbol-heading h2 {
-      font-family: var(--display-cn);
-      font-size: clamp(2.6rem, 6vw, 6.5rem);
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: 1.25rem;
-      margin-top: 0;
-    }
-
-    .symbol-heading > p:last-child {
-      color: #d6cfc3;
-      font-family: var(--serif);
-      font-size: clamp(1.05rem, 1.8vw, 1.45rem);
-      line-height: 1.8;
-      margin-bottom: 0;
-      max-width: 34rem;
-    }
-
-    .symbol-story {
-      background: radial-gradient(circle at 17% 28%, rgba(107, 27, 30, .2), transparent 30%), #0a0807;
-      display: grid;
-      grid-template-columns: minmax(13rem, .42fr) minmax(0, 1.58fr);
-      position: relative;
-    }
-
-    .symbol-title-rail {
-      height: 100svh;
-      position: sticky;
-      top: 0;
-    }
-
-    .symbol-title-rail p {
-      inset: 0;
-      margin: 0;
-      overflow: hidden;
-      position: absolute;
-    }
-
-    .symbol-title-rail span {
-      color: var(--bone);
-      font-family: var(--display-cn);
-      font-size: clamp(3.6rem, 6.5vw, 7.5rem);
-      font-weight: 900;
-      left: clamp(1rem, 3vw, 3rem);
-      letter-spacing: -.01em;
-      line-height: .84;
-      max-width: 3.4em;
-      opacity: 0;
-      position: absolute;
-      top: 50%;
-      transform: translate3d(0, 32%, 0) rotate(3deg);
-      transition: opacity .72s cubic-bezier(.22, 1, .36, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
-    }
-
-    .symbol-title-rail [data-title-state="potato"] span:nth-child(1),
-    .symbol-title-rail [data-title-state="rice"] span:nth-child(2),
-    .symbol-title-rail [data-title-state="dragon"] span:nth-child(3) {
-      opacity: 1;
-      transform: translate3d(0, -50%, 0) rotate(0);
-    }
-
-    .symbol-title-rail span:nth-child(2) { color: var(--red); }
-    .symbol-title-rail span:nth-child(3) { color: var(--gold); font-size: clamp(3rem, 5.4vw, 6.4rem); }
-
-    .symbol-beats { min-width: 0; padding: 10svh clamp(1rem, 3vw, 3.25rem) 16svh 0; }
-
-    .symbol-beat {
-      align-items: center;
-      display: grid;
-      gap: clamp(1.15rem, 2vw, 2.5rem);
-      grid-template-columns: minmax(0, 1.9fr) minmax(12rem, .66fr);
-      min-height: 82svh;
-      opacity: .42;
-      transform: translate3d(0, 3rem, 0);
-      transition: opacity .7s ease, transform .9s cubic-bezier(.16, 1, .3, 1);
-    }
-
-    .symbol-beat.is-active { opacity: 1; transform: none; }
-
-    .symbol-beat figure {
-      aspect-ratio: 16 / 9;
-      background: var(--surface);
-      box-shadow: 0 2rem 4rem rgba(0, 0, 0, .55), 0 0 0 1px rgba(237, 228, 211, .13);
-      margin: 0;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-    }
-
-    .symbol-beat figure img, .symbol-beat figure svg {
-      display: block;
-      height: 100%;
-      object-fit: cover;
-      width: 100%;
-    }
-
-    .symbol-beat figure svg { object-fit: contain; width: 66%; height: 66%; }
-
-    .symbol-count {
-      color: var(--red) !important;
-      font: 400 1rem var(--mono);
-      letter-spacing: .18em;
-      margin: 0 0 .8rem !important;
-      text-transform: uppercase;
-    }
-
-    .symbol-beat h3 {
-      font-family: var(--display-cn);
-      font-size: clamp(2rem, 3.7vw, 4rem);
-      font-weight: 900;
-      line-height: 1.08;
-      margin: 0;
-    }
-
-    .symbol-beat div > p:last-child {
-      color: #d4c9bc;
-      font-family: var(--serif);
-      font-size: clamp(1rem, 1.35vw, 1.2rem);
-      line-height: 1.8;
-      margin: 1.25rem 0 0;
-    }
-
-    /* ============ 尾声 ============ */
-    .epilogue {
-      background: #060504;
-      min-height: 100svh;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .epilogue-scene { display: grid; height: 100svh; place-items: center; position: relative; }
-
-    .epilogue-final {
-      background: var(--bg);
-      display: grid;
-      height: 100%;
-      overflow: hidden;
-      padding: clamp(1.25rem, 4vw, 3.5rem);
-      place-items: center;
-      pointer-events: none;
-      position: relative;
-      text-align: center;
-      width: 100%;
-    }
-
-    .epilogue-video-frame {
-      aspect-ratio: 16 / 9;
-      background: #000;
-      border: 1px solid rgba(237, 228, 211, .14);
-      box-shadow: 0 2.2rem 6rem rgba(0, 0, 0, .68);
-      overflow: hidden;
-      position: relative;
-      transition: opacity .8s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
-      width: min(74vw, 72rem);
-    }
-
-    .epilogue-final-img {
-      display: block;
-      filter: saturate(.86) contrast(1.08) brightness(.86);
-      height: 100%;
-      object-fit: cover;
-      width: 100%;
-    }
-
-    .epilogue-final-copy {
-      display: grid;
-      inset: 0;
-      opacity: 0;
-      padding: clamp(1.5rem, 5vw, 5rem);
-      place-content: center;
-      position: absolute;
-      text-align: center;
-      text-shadow: 0 .15em .8em rgba(0, 0, 0, .92);
-      transform: translate3d(0, 1.2rem, 0);
-      z-index: 1;
-    }
-
-    .epilogue-final .eyebrow { display: inline-flex; margin-bottom: 1rem; }
-
-    .epilogue-final h2 {
-      font-family: var(--display-cn);
-      font-weight: 900;
-      margin: 0;
-    }
-
-    .epilogue-welcome-line {
-      color: #d4d8dd;
-      color: #d4cfc3;
-      display: block;
-      font-size: clamp(2rem, 3.2vw, 3.75rem);
-      letter-spacing: .11em;
-      line-height: 1;
-      margin-bottom: .32em;
-    }
-
-    .epilogue-film-line {
-      color: var(--bone);
-      display: block;
-      font-size: clamp(2.65rem, 4.35vw, 5.25rem);
-      line-height: .98;
-      white-space: nowrap;
-    }
-
-    .epilogue-slogan {
-      color: var(--red);
-      font-family: var(--serif);
-      font-size: clamp(1.1rem, 1.8vw, 1.7rem);
-      letter-spacing: .3em;
-      margin: 1.6rem 0 0;
-    }
-
-    .epilogue-credits {
-      color: #8f8577;
-      font-family: var(--mono);
-      font-size: .68rem;
-      letter-spacing: .22em;
-      line-height: 2;
-      margin: 2rem 0 0;
-      text-transform: uppercase;
-    }
-
-    .epilogue-credits b { color: var(--gold); font-weight: 400; }
-
-    .epilogue.is-fading .epilogue-video-frame { opacity: 0; transform: scale(.985); }
-    .epilogue.is-complete .epilogue-final-copy { animation: epilogueWelcome .9s cubic-bezier(.16, 1, .3, 1) both; }
-
-    @keyframes epilogueWelcome { to { opacity: 1; transform: none; } }
-
-    /* ============ 无障碍 & 降级 ============ */
-    .sr-only {
-      border: 0;
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      white-space: nowrap;
-      width: 1px;
-    }
-
-    @media (max-width: 820px) {
-      .hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-      }
-
-      .hero-art {
-        min-height: 78svh;
-        padding: 0;
-      }
-
-      .hero-poster { height: 72svh; }
-
-      .hero-copy { padding: 2rem .5rem 4rem; }
-
-      .hero-title { font-size: clamp(3.1rem, 15vw, 6.2rem); }
-
-      .reflection-rail figure:first-child { width: 128vw; }
-      .reflection-rail figure:last-child { width: 58vw; }
-
-      .deck {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        padding-bottom: 4rem;
-      }
-
-      .deck-stage { aspect-ratio: 1.15 / 1; }
-
-      .symbol-handoff { min-height: 64svh; }
-      .symbol-heading { min-height: 64svh; padding-left: 1.25rem; padding-right: 1.25rem; }
-      .symbol-story { grid-template-columns: 1fr; }
-      .symbol-title-rail {
-        background: rgba(10, 8, 7, .92);
-        height: 30svh;
-        z-index: 3;
-      }
-      .symbol-title-rail span {
-        font-size: clamp(3.4rem, 18vw, 6.4rem);
-        left: 1.25rem;
-        max-width: 4em;
-      }
-      .symbol-title-rail span:nth-child(3) { font-size: clamp(2.9rem, 15vw, 5.6rem); }
-      .symbol-beats { padding: 0 1.25rem 10svh; }
-      .symbol-beat {
-        grid-template-columns: 1fr;
-        min-height: 74svh;
-        padding: 5svh 0;
-      }
-      .symbol-beat figure { aspect-ratio: 1.2 / 1; }
-
-      .epilogue-final { padding: 1.25rem; }
-      .epilogue-video-frame { width: min(90vw, 72rem); }
-      .epilogue-welcome-line { font-size: clamp(1.5rem, 5vw, 2.75rem); }
-      .epilogue-film-line { font-size: clamp(1.6rem, 5.8vw, 3.2rem); }
-
-      .deck-controls { flex-wrap: wrap; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .kinetic-intro { display: none; }
-
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
-      }
-
-      .is-motion-ready .motion-glyph { opacity: 1; transform: none; }
-
-      .reflection-primary { transform: none !important; }
-      .reflection-mirror { transform: scaleY(-1) !important; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 课程作品集 | AI Course Portfolio</title>
+<meta name="description" content="记录我在学校 AI 课上完成的每一次构建：沉浸式 HTML、AI 创作与动效实验。">
+<style>
+  :root{
+    --bg:#0c0b10;
+    --bg-2:#131119;
+    --bg-3:#1a1721;
+    --ink:#ece7dc;
+    --ink-dim:#a59d8f;
+    --ink-faint:#6f695f;
+    --line:rgba(236,231,220,.12);
+    --line-strong:rgba(236,231,220,.22);
+    --gold:#c8a878;
+    --gold-bright:#e3c98f;
+    --red:#8e2f2a;
+    --red-deep:#5c1a1b;
+    --muted-red:#a3534a;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--red);color:var(--ink);}
+
+  /* ---------- film grain ---------- */
+  body::before{
+    content:"";
+    position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(12,11,16,.72);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;}
+  .brand{display:flex;align-items:center;gap:10px;font-size:14px;letter-spacing:.2em;font-weight:600;}
+  .brand .dot{width:9px;height:9px;background:var(--gold);border-radius:50%;box-shadow:0 0 12px var(--gold);}
+  .nav-links{display:flex;gap:28px;font-size:13px;letter-spacing:.08em;}
+  .nav-links a{color:var(--ink-dim);text-decoration:none;transition:color .3s;}
+  .nav-links a:hover{color:var(--gold);}
+  .nav-links .en{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11px;margin-left:6px;color:var(--ink-faint);}
+  @media(max-width:640px){.nav-links{display:none;}}
+
+  /* ---------- hero ---------- */
+  header.hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:120px 0 80px;position:relative;overflow:hidden;
+  }
+  /* ambient red glow */
+  .hero::before{
+    content:"";position:absolute;z-index:-1;
+    width:900px;height:900px;left:50%;top:18%;transform:translateX(-50%);
+    background:radial-gradient(closest-side,rgba(142,47,42,.22),transparent 70%);
+  }
+  .hero::after{
+    content:"";position:absolute;z-index:-1;
+    width:560px;height:560px;right:-180px;bottom:-160px;
+    background:radial-gradient(closest-side,rgba(200,168,120,.12),transparent 70%);
+  }
+  .kicker{
+    display:flex;align-items:center;gap:16px;
+    font-size:12px;letter-spacing:.42em;color:var(--gold);margin-bottom:34px;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  .kicker::before{content:"";width:56px;height:1px;background:var(--gold);}
+  .kicker::after{content:"";flex:1;max-width:240px;height:1px;background:var(--line);}
+  h1{
+    font-size:clamp(44px,9.5vw,118px);
+    font-weight:800;line-height:1.04;letter-spacing:.02em;
+  }
+  .line{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em;}
+  .line .ch{
+    display:inline-block;
+    transform:translateY(118%) rotate(6deg);
+    opacity:0;
+    animation:chIn .9s var(--ease) forwards;
+    animation-delay:var(--d);
+    color:var(--ink);
+  }
+  .line.accent .ch{color:var(--gold-bright);}
+  .line.thin{font-weight:400;}
+  @keyframes chIn{to{transform:translateY(0) rotate(0);opacity:1;}}
+  .sub{
+    margin-top:38px;max-width:560px;
+    color:var(--ink-dim);font-size:clamp(14px,1.6vw,17px);line-height:2;
+    opacity:0;transform:translateY(18px);
+    animation:fadeUp 1s var(--ease) .9s forwards;
+  }
+  @keyframes fadeUp{to{opacity:1;transform:none;}}
+  .hero-meta{
+    margin-top:52px;display:flex;flex-wrap:wrap;gap:14px 30px;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--ink-faint);
+    opacity:0;animation:fadeUp 1s var(--ease) 1.15s forwards;
+  }
+  .hero-meta b{color:var(--ink-dim);font-weight:500;margin-right:6px;}
+  .scroll-hint{
+    position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+    letter-spacing:.3em;color:var(--ink-faint);display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .scroll-hint::after{
+    content:"";width:1px;height:44px;
+    background:linear-gradient(var(--gold),transparent);
+    animation:drop 1.8s ease-in-out infinite;
+  }
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top;}55%{transform:scaleY(1);transform-origin:top;}56%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+  /* ---------- marquee strip ---------- */
+  .strip{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:var(--bg-2);overflow:hidden;padding:16px 0;white-space:nowrap;
+    position:relative;
+  }
+  .strip .track{
+    display:inline-flex;gap:0;will-change:transform;
+    animation:marquee 34s linear infinite;
+  }
+  .strip:hover .track{animation-play-state:paused;}
+  @keyframes marquee{to{transform:translateX(-50%);}}
+  .strip .item{
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:12px;letter-spacing:.28em;color:var(--ink-dim);
+    display:inline-flex;align-items:center;padding:0 26px;
+  }
+  .strip .item::before{content:"✦";color:var(--red);margin-right:52px;font-size:10px;}
+
+  /* ---------- sections ---------- */
+  section{position:relative;padding:130px 0;}
+  .sec-head{display:flex;align-items:baseline;gap:22px;margin-bottom:22px;}
+  .sec-no{
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:13px;color:var(--gold);letter-spacing:.2em;
+  }
+  .sec-title{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:.04em;}
+  .sec-line{flex:1;height:1px;background:var(--line);}
+  .sec-desc{color:var(--ink-dim);max-width:640px;margin-bottom:52px;font-size:15px;line-height:2;}
+
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+  .reveal.d1{transition-delay:.08s;}.reveal.d2{transition-delay:.16s;}.reveal.d3{transition-delay:.24s;}
+
+  /* ---------- works grid ---------- */
+  .works-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:22px;}
+  .card{
+    grid-column:span 12;
+    border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    background:var(--bg-2);display:grid;grid-template-columns:1.15fr 1fr;
+    text-decoration:none;color:inherit;
+    transition:transform .5s var(--ease),border-color .5s,box-shadow .5s;
+  }
+  @media(max-width:820px){.card{grid-template-columns:1fr;}}
+  .card:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:0 30px 60px -30px rgba(0,0,0,.7);}
+  .card-cover{position:relative;min-height:340px;overflow:hidden;}
+  .card-cover svg{position:absolute;inset:0;width:100%;height:100%;}
+  .cover-tag{
+    position:absolute;top:18px;left:18px;z-index:2;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+    letter-spacing:.22em;color:#e9d7b8;
+    border:1px solid rgba(233,215,184,.4);border-radius:999px;padding:5px 12px;
+    background:rgba(12,11,16,.35);backdrop-filter:blur(6px);
+  }
+  .card-body{padding:clamp(28px,4vw,52px);display:flex;flex-direction:column;justify-content:center;gap:18px;}
+  .card-no{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--gold);letter-spacing:.2em;}
+  .card-body h3{font-size:clamp(24px,3vw,34px);font-weight:700;line-height:1.25;}
+  .card-body h3 .zh{color:var(--gold-bright);}
+  .card-body p{color:var(--ink-dim);font-size:14.5px;line-height:2;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-size:11.5px;letter-spacing:.05em;color:var(--ink-dim);
+    border:1px solid var(--line-strong);border-radius:999px;padding:4px 12px;
+  }
+  .card-link{
+    display:inline-flex;align-items:center;gap:12px;margin-top:6px;
+    font-size:13px;letter-spacing:.14em;color:var(--ink);
+    border-bottom:1px solid var(--gold);padding-bottom:6px;width:max-content;
+    transition:color .3s,gap .3s;
+  }
+  .card:hover .card-link{color:var(--gold-bright);gap:18px;}
+  .card-link .arrow{color:var(--gold);}
+
+  /* placeholder cards */
+  .placeholder{
+    grid-column:span 6;min-height:230px;
+    border:1px dashed var(--line-strong);border-radius:18px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+    color:var(--ink-faint);background:transparent;padding:30px;text-align:center;
+    transition:border-color .4s,color .4s;
+  }
+  .placeholder:hover{border-color:var(--gold);color:var(--ink-dim);}
+  @media(max-width:820px){.placeholder{grid-column:span 12;}}
+  .placeholder .ph-no{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.24em;}
+  .placeholder h4{font-weight:500;font-size:15px;letter-spacing:.06em;}
+
+  /* ---------- process / about ---------- */
+  .about-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media(max-width:820px){.about-grid{grid-template-columns:1fr;}}
+  .about-card{
+    border:1px solid var(--line);border-radius:16px;padding:32px 26px;
+    background:var(--bg-2);position:relative;overflow:hidden;
+    transition:transform .5s var(--ease),border-color .5s;
+  }
+  .about-card:hover{transform:translateY(-4px);border-color:var(--line-strong);}
+  .about-card::before{
+    content:attr(data-idx);
+    position:absolute;top:-14px;right:8px;font-size:86px;font-weight:800;
+    color:rgba(236,231,220,.045);line-height:1;pointer-events:none;
+  }
+  .about-card .ic{font-size:13px;letter-spacing:.2em;color:var(--gold);margin-bottom:16px;font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+  .about-card h4{font-size:18px;margin-bottom:12px;font-weight:600;}
+  .about-card p{font-size:13.5px;color:var(--ink-dim);line-height:2;}
+
+  /* ---------- big quote ---------- */
+  .quote-sec{padding:120px 0;text-align:center;position:relative;}
+  .quote-sec::before{
+    content:"";position:absolute;inset:0;z-index:-1;
+    background:radial-gradient(60% 80% at 50% 50%,rgba(142,47,42,.10),transparent 75%);
+  }
+  .big-quote{
+    font-size:clamp(26px,5vw,54px);font-weight:700;line-height:1.5;
+    letter-spacing:.1em;color:var(--ink);
+  }
+  .big-quote em{font-style:normal;color:var(--gold-bright);}
+  .quote-sub{margin-top:24px;color:var(--ink-faint);font-size:13px;letter-spacing:.3em;font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;}
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line);padding:60px 0 80px;background:var(--bg-2);
+  }
+  .foot-inner{display:flex;flex-wrap:wrap;gap:30px;align-items:center;justify-content:space-between;}
+  .foot-brand{font-size:15px;letter-spacing:.16em;font-weight:600;display:flex;align-items:center;gap:10px;}
+  .foot-brand .dot{width:8px;height:8px;background:var(--gold);border-radius:50%;}
+  .foot-meta{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--ink-faint);letter-spacing:.1em;}
+  .foot-meta a{color:var(--ink-dim);text-decoration:none;border-bottom:1px solid var(--line-strong);padding-bottom:2px;transition:color .3s,border-color .3s;}
+  .foot-meta a:hover{color:var(--gold);border-color:var(--gold);}
+  .back-top{
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11px;
+    letter-spacing:.2em;color:var(--ink-dim);text-decoration:none;
+    border:1px solid var(--line-strong);border-radius:999px;padding:9px 18px;
+    transition:color .3s,border-color .3s;
+  }
+  .back-top:hover{color:var(--gold);border-color:var(--gold);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-delay:0ms !important;transition-duration:.01ms !important;}
+    .reveal{opacity:1;transform:none;}
+  }
+</style>
 </head>
-<body class="intro-running">
-  <!-- ============ 动能开场 ============ -->
-  <section class="kinetic-intro" data-kinetic-intro aria-hidden="true">
-    <div class="kinetic-reveal">
-      <div class="kinetic-stage" data-kinetic-stage>
-        <p class="kinetic-line">XU FU — 徐福 — XU FU — 徐福 —</p>
-        <p class="kinetic-line">龙餐馆 — LONG CANTEEN — 龙餐馆 —</p>
-        <p class="kinetic-line">LONG CANTEEN — LONG CANTEEN —</p>
-        <p class="kinetic-line">WELCOME TO THE DRAGON RESTAURANT —</p>
-        <p class="kinetic-line">能吃饭，就别打仗 — NO WAR, JUST FIRE —</p>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="wrap nav-inner">
+    <div class="brand"><span class="dot"></span>AI 课程作品集</div>
+    <div class="nav-links">
+      <a href="#works">作品<span class="en">/ WORKS</span></a>
+      <a href="#about">方法<span class="en">/ APPROACH</span></a>
+      <a href="#contact">关于<span class="en">/ ABOUT</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">AI COURSE · PORTFOLIO — 2026</div>
+    <h1 id="hero-title">
+      <span class="line"><span class="ch" style="--d:.05s">记</span><span class="ch" style="--d:.1s">录</span><span class="ch" style="--d:.15s">每</span><span class="ch" style="--d:.2s">一</span><span class="ch" style="--d:.25s">次</span></span>
+      <span class="line accent"><span class="ch" style="--d:.34s">构</span><span class="ch" style="--d:.39s">建</span><span class="ch" style="--d:.44s">&nbsp;</span></span>
+      <span class="line thin"><span class="ch" style="--d:.52s">A</span><span class="ch" style="--d:.56s">I</span><span class="ch" style="--d:.6s">&nbsp;</span><span class="ch" style="--d:.64s">课</span><span class="ch" style="--d:.68s">程</span><span class="ch" style="--d:.72s">作</span><span class="ch" style="--d:.76s">品</span><span class="ch" style="--d:.8s">集</span></span>
+    </h1>
+    <p class="sub">这里是 zhanfoguang 在学校 AI 课程里的作品归档 —— 把「想法」变成「能点开看的页面」。<br>
+    用 AI 辅助创作，用代码构建表达：沉浸式 HTML、电影海报转译、动效实验。</p>
+    <div class="hero-meta">
+      <span><b>作者</b>zhanfoguang</span>
+      <span><b>内容</b>AI 创作 × 前端构建</span>
+      <span><b>状态</b>持续更新中</span>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</header>
+
+<!-- ============ MARQUEE ============ -->
+<div class="strip" aria-hidden="true">
+  <div class="track" id="marquee"></div>
+</div>
+
+<!-- ============ WORKS ============ -->
+<section id="works">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-no">01 / WORKS</span>
+      <h2 class="sec-title">课程作业</h2>
+      <div class="sec-line"></div>
+    </div>
+    <p class="sec-desc reveal d1">每一份作业都是一次完整的「转译」：从看懂参考、提炼视觉基因，到用纯 HTML / CSS / JS 把它构建成可交互的单文件页面。</p>
+
+    <div class="works-grid">
+      <!-- Work 01 : Dragon Restaurant -->
+      <a class="card reveal" href="./works/dragon-restaurant/index.html" style="grid-column:span 12;">
+        <div class="card-cover">
+          <span class="cover-tag">WORK 01 · 沉浸式电影宣传页</span>
+          <svg viewBox="0 0 640 520" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#3a1413"/>
+                <stop offset=".55" stop-color="#5c1a1b"/>
+                <stop offset="1" stop-color="#8e2f2a"/>
+              </linearGradient>
+              <radialGradient id="halo" cx=".5" cy=".42" r=".6">
+                <stop offset="0" stop-color="#e3c98f" stop-opacity=".5"/>
+                <stop offset="1" stop-color="#e3c98f" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="640" height="520" fill="url(#cg)"/>
+            <rect width="640" height="520" fill="url(#halo)"/>
+            <!-- abstract dragon head holding a bullet, kept minimal -->
+            <g stroke="#e3c98f" stroke-width="2.4" fill="none" stroke-linecap="round">
+              <path d="M160 210 C 150 120, 230 80, 300 110 C 360 135, 400 90, 430 120" opacity=".85"/>
+              <path d="M300 110 C 320 150, 300 190, 340 210" opacity=".6"/>
+              <path d="M150 230 C 120 260, 130 330, 200 340 C 260 348, 320 330, 360 300" opacity=".55"/>
+              <path d="M420 160 C 470 150, 520 190, 540 240 C 556 280, 550 330, 520 350" opacity=".5"/>
+            </g>
+            <!-- bullet casing from mouth -->
+            <g>
+              <rect x="316" y="198" width="14" height="46" rx="7" fill="#c8a878" transform="rotate(-38 323 221)"/>
+              <rect x="330" y="196" width="12" height="30" rx="4" fill="#e3c98f" transform="rotate(-38 336 211)"/>
+            </g>
+            <!-- scale rhythm dots -->
+            <g fill="#e3c98f" opacity=".35">
+              <circle cx="120" cy="400" r="3"/><circle cx="150" cy="430" r="5"/>
+              <circle cx="190" cy="410" r="2.4"/><circle cx="230" cy="450" r="4"/>
+              <circle cx="520" cy="420" r="3.4"/><circle cx="560" cy="400" r="2.4"/>
+              <circle cx="580" cy="440" r="5"/><circle cx="100" cy="470" r="4"/>
+            </g>
+            <text x="36" y="486" font-family="serif" font-size="15" fill="#e9d7b8" opacity=".8" letter-spacing="6">欢迎来龙餐馆</text>
+            <text x="36" y="508" font-family="monospace" font-size="9" fill="#e9d7b8" opacity=".5" letter-spacing="3">ONCE UPON A TIME IN THE MIDDLE EAST</text>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-no">N° 01 — 电影主题 · 单页沉浸式 HTML</div>
+          <h3><span class="zh">《欢迎来龙餐馆》</span><br>电影宣传页</h3>
+          <p>以电影「烟火 × 硝烟」的符号碰撞为内核，将宣传信息重构为一场滚动叙事：开场动能标题、弹性剧照墙、3D 角色卡、核心意象锚点与胶片致谢名单 —— 全部打包进一个可离线打开的单文件 HTML。</p>
+          <div class="chips">
+            <span class="chip">动效转译</span>
+            <span class="chip">视觉基因提取</span>
+            <span class="chip">纯原生 JS</span>
+            <span class="chip">单文件发布</span>
+          </div>
+          <span class="card-link">打开作品 <span class="arrow">→</span></span>
+        </div>
+      </a>
+
+      <!-- placeholders -->
+      <div class="placeholder reveal d1">
+        <div class="ph-no">WORK 02</div>
+        <h4>下次作业 · 敬请期待</h4>
+      </div>
+      <div class="placeholder reveal d2">
+        <div class="ph-no">WORK 03</div>
+        <h4>下次作业 · 敬请期待</h4>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <main>
-    <!-- ============ HERO ============ -->
-    <section class="hero" id="film" aria-labelledby="hero-title">
-      <div class="hero-art">
-        <div class="hero-poster">
-          <div class="hero-poster-bg"></div>
-          <svg class="hero-poster-symbol" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="龙口衔子弹图形">
-            <path d="M 130 40 C 115 30, 95 28, 82 38 C 70 48, 65 63, 72 76 C 80 90, 90 94, 85 106 C 80 118, 65 123, 50 120 C 35 117, 28 107, 25 93"
-              stroke="#C49B6C" stroke-width="1.6" opacity="0.5" stroke-linecap="round" fill="none"/>
-            <g opacity="0.62">
-              <path d="M 24 93 L 21 83 L 26 75 L 34 74 L 39 79 L 37 89 L 30 95 Z"
-                fill="#6B1B1E" opacity="0.5" stroke="#8a2a2c" stroke-width="0.7"/>
-              <path d="M 30 75 L 27 67 L 25 62" stroke="#C49B6C" stroke-width="1.2" opacity="0.45" fill="none" stroke-linecap="round"/>
-              <path d="M 34 74 L 36 66 L 38 60" stroke="#C49B6C" stroke-width="1.2" opacity="0.45" fill="none" stroke-linecap="round"/>
-              <circle cx="31" cy="83" r="1.4" fill="#D4602A" opacity="0.65"/>
-              <path d="M 22 88 L 34 85" stroke="#1A1A1A" stroke-width="0.9" opacity="0.5"/>
-            </g>
-            <g opacity="0.75">
-              <ellipse cx="50" cy="88" rx="8" ry="2.5" fill="#8B7355" opacity="0.55"/>
-              <path d="M 57 85.8 C 61 86.5, 64 88, 64 88 C 64 88, 61 89.5, 57 90.2 L 57 85.8 Z" fill="#C49B6C" opacity="0.6"/>
-              <ellipse cx="44" cy="88" rx="1.5" ry="2.2" fill="#6B5340" opacity="0.5"/>
-              <ellipse cx="49" cy="87" rx="3.5" ry="0.7" fill="#D4B896" opacity="0.3"/>
-            </g>
-            <g opacity="0.22">
-              <line x1="110" y1="35" x2="113" y2="32" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="100" y1="36" x2="103" y2="33" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="89" y1="40" x2="92" y2="37" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="79" y1="48" x2="82" y2="45" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="71" y1="60" x2="74" y2="57" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="70" y1="76" x2="73" y2="73" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="78" y1="90" x2="81" y2="87" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="82" y1="106" x2="85" y2="103" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="75" y1="118" x2="78" y2="115" stroke="#C49B6C" stroke-width="0.6"/>
-              <line x1="62" y1="122" x2="65" y2="119" stroke="#C49B6C" stroke-width="0.6"/>
-            </g>
-            <circle cx="80" cy="80" r="52" stroke="#6B1B1E" stroke-width="0.4" opacity="0.1" fill="none" stroke-dasharray="2 3"/>
-          </svg>
-          <div class="hero-poster-photo"><img data-media="xufu.jpg" alt="沈腾饰演的徐福在后厨掌勺"></div>
-          <p class="hero-poster-mark"><b>N° 001</b> · LONG CANTEEN · 2026</p>
-          <p class="hero-poster-cn">欢迎来龙餐馆</p>
-          <p class="hero-poster-ar">مرحبا بكم في مطعم التنين</p>
-          <p class="hero-poster-en">Once Upon a Time in the Middle East</p>
-        </div>
+<!-- ============ APPROACH ============ -->
+<section id="about" style="padding-top:40px;">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-no">02 / APPROACH</span>
+      <h2 class="sec-title">我的做法</h2>
+      <div class="sec-line"></div>
+    </div>
+    <p class="sec-desc reveal d1">课程中逐步建立的一套「从参考到成品」的创作流程 —— 不套模板，先判断，再转译，后构建。</p>
+    <div class="about-grid">
+      <div class="about-card reveal" data-idx="01">
+        <div class="ic">STEP 01 · ANALYZE</div>
+        <h4>看懂参考</h4>
+        <p>先判断这是一件怎样的作品：类型、情绪、信息层级、视觉母题。参考只用于提取「视觉基因」，绝不机械复刻构图与配色。</p>
       </div>
-      <div class="hero-copy">
-        <p class="eyebrow">A FILM BY WEN MUYE · 文牧野执导</p>
-        <h1 class="hero-title" id="hero-title" data-motion-title aria-label="欢迎来龙餐馆"><span data-motion-line>欢迎来</span><span data-motion-line>龙餐馆</span></h1>
-        <p class="hero-title-en">Once Upon a Time in the Middle East</p>
-        <p class="hero-tagline">东北厨师徐福为还债远赴中东，在战火里把一间中餐馆，开成了乱世中的避风港。</p>
-        <div class="hero-scores">
-          <div><b>8.7</b><i>豆瓣评分</i></div>
-          <div><b>9.9</b><i>淘票票</i></div>
-          <div><b>16亿+</b><i>累计票房</i></div>
-        </div>
-        <p class="hero-release"><span>2026.08.11</span><small>全国上映 · 沈腾 / 蒋奇明 主演 · 宁浩 监制</small></p>
+      <div class="about-card reveal d1" data-idx="02">
+        <div class="ic">STEP 02 · TRANSLATE</div>
+        <h4>转译视觉基因</h4>
+        <p>把抽象的文化符号拆成曲线、节奏、色彩与肌理：例如「龙」不画成龙形，而提取为流线、鳞片律动与几何暗示。</p>
       </div>
-    </section>
+      <div class="about-card reveal d2" data-idx="03">
+        <div class="ic">STEP 03 · BUILD</div>
+        <h4>构建与降级</h4>
+        <p>用纯 HTML / CSS / JS 实现，滚动动效以 IntersectionObserver 驱动，并始终尊重 prefers-reduced-motion，保证移动端可用。</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- ============ 反射桥 ============ -->
-    <section class="reflection-bridge" data-reflection-track aria-label="烟火与硝烟">
-      <div class="reflection-sticky">
-        <div class="reflection-caption">
-          <span>FIRE &amp; FOOD × SMOKE &amp; WAR</span>
-          <strong>烟火 × 硝烟</strong>
-        </div>
-        <div class="reflection-viewport">
-          <div class="reflection-rail reflection-primary" data-reflection-primary>
-            <figure><img data-media="daily.jpg" alt="后厨灶火的日常烟火" loading="lazy" decoding="async"></figure>
-            <figure><img data-media="xufu-2.jpg" alt="徐福在龙餐馆" loading="lazy" decoding="async"></figure>
-          </div>
-          <div class="reflection-rail reflection-mirror" data-reflection-mirror aria-hidden="true">
-            <figure><img data-media="daily.jpg" alt="" loading="lazy" decoding="async"></figure>
-            <figure><img data-media="xufu-2.jpg" alt="" loading="lazy" decoding="async"></figure>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- ============ QUOTE ============ -->
+<div class="quote-sec reveal">
+  <div class="wrap">
+    <div class="big-quote">学习不是堆效果，<br>而是让每个动效 <em>都在传达信息</em>。</div>
+    <div class="quote-sub">PRINCIPLE OF THIS PORTFOLIO</div>
+  </div>
+</div>
 
-    <!-- ============ 人物分镜 ============ -->
-    <section class="deck cast-deck" id="cast" data-cast-deck aria-labelledby="cast-title" tabindex="0">
-      <div class="deck-heading">
-        <p class="eyebrow">THE PEOPLE OF LONG CANTEEN</p>
-        <h2 id="cast-title">人物分镜</h2>
-        <p>一间开在战火里的中餐馆，两个把锅铲当武器的人。</p>
-      </div>
-      <div class="deck-stage" aria-hidden="true">
-        <div class="deck-layer is-current"><img data-cast-image-current alt="" role="presentation"></div>
-        <div class="deck-layer is-next"><img data-cast-image-next alt="" role="presentation"></div>
-        <div class="deck-stage-shade" aria-hidden="true"></div>
-      </div>
-      <div class="deck-copy" data-cast-copy-wrap>
-        <p class="deck-scene" data-cast-copy="scene"></p>
-        <h3 class="deck-name" data-cast-copy="name"></h3>
-        <p class="deck-credit" data-cast-copy="credit"></p>
-        <p class="deck-role" data-cast-copy="role"></p>
-        <p class="deck-visual-note">本帧画面：<span data-cast-visual-note></span></p>
-        <p class="deck-line" data-cast-copy="line"></p>
-      </div>
-      <p class="sr-only" data-cast-live aria-live="polite"></p>
-      <div class="deck-controls" aria-label="人物分镜控制">
-        <button type="button" data-cast-prev aria-label="上一张人物分镜">上一张</button>
-        <p class="deck-index" data-cast-index aria-label="当前人物分镜">01 / 02</p>
-        <div class="deck-dots" aria-label="选择人物分镜">
-          <button type="button" data-cast-dot aria-label="查看人物分镜 1"></button>
-          <button type="button" data-cast-dot aria-label="查看人物分镜 2"></button>
-        </div>
-        <button type="button" data-cast-next aria-label="下一张人物分镜">下一张</button>
-      </div>
-      <ol class="sr-only" aria-label="完整人物分镜资料">
-        <li><article><h3>徐福</h3><p>沈腾 饰</p><p>龙餐馆主厨</p><p>从只想还债的普通人，到火线守护孤儿的"父亲"。</p></article></li>
-        <li><article><h3>马俊生</h3><p>蒋奇明 饰</p><p>大堂经理</p><p>用发芽土豆救孩子，牺牲前留下一句"没糊弄过去"。</p></article></li>
-      </ol>
-    </section>
+<!-- ============ FOOTER / ABOUT ============ -->
+<footer id="contact">
+  <div class="wrap foot-inner">
+    <div class="foot-brand"><span class="dot"></span>AI 课程作品集</div>
+    <div class="foot-meta">
+      <a href="https://github.com/zhanfoguang" target="_blank" rel="noopener">github.com/zhanfoguang</a>
+      &nbsp;·&nbsp; AI Course Portfolio · 2026
+    </div>
+    <a class="back-top" href="#">回到顶部 ↑</a>
+  </div>
+</footer>
 
-    <!-- ============ 故事四幕 ============ -->
-    <section class="deck story-deck" id="story" data-story-deck aria-labelledby="story-title" tabindex="0">
-      <div class="deck-heading">
-        <p class="eyebrow">FOUR ACTS OF FIRE</p>
-        <h2 id="story-title">故事四幕</h2>
-        <p>一灶烟火，如何穿过一场战争。</p>
-      </div>
-      <div class="deck-stage" aria-hidden="true">
-        <div class="deck-layer is-current"><img data-story-image-current alt="" role="presentation"></div>
-        <div class="deck-layer is-next"><img data-story-image-next alt="" role="presentation"></div>
-        <div class="deck-stage-shade" aria-hidden="true"></div>
-      </div>
-      <div class="deck-copy" data-story-copy-wrap>
-        <p class="deck-scene" data-story-copy="scene"></p>
-        <p class="deck-credit" data-story-copy="subtitle"></p>
-        <p class="deck-role" data-story-copy="chapter"></p>
-        <h3 class="deck-name" data-story-copy="title" style="font-size: clamp(2rem, 4.4vw, 4.4rem);"></h3>
-        <p class="deck-line" data-story-copy="caption"></p>
-      </div>
-      <p class="sr-only" data-story-live aria-live="polite"></p>
-      <div class="deck-controls" aria-label="故事四幕控制">
-        <button type="button" data-story-prev aria-label="上一幕" disabled aria-disabled="true">上一幕</button>
-        <p class="deck-index" data-story-index aria-label="当前幕">01 / 04</p>
-        <div class="deck-progress-track" aria-hidden="true"><span data-story-progress></span></div>
-        <button type="button" data-story-next aria-label="下一幕">下一幕</button>
-      </div>
-      <ol class="sr-only" aria-label="故事四幕完整资料">
-        <li><article><p>第一幕 · 开火</p><h3>好好吃饭</h3><p>巴哈塔的日常：后厨的火、餐桌上的饱，是一家餐馆全部的体面。</p></article></li>
-        <li><article><p>第二幕 · 断火</p><h3>战火骤至</h3><p>炮火撕开街区，餐馆成了废墟里还亮着灯的地方。</p></article></li>
-        <li><article><p>第三章 · 续火</p><h3>徐福烩饭</h3><p>自嘲"上不了台面"的一碗饭，写进了菜单，也写进了人心。</p></article></li>
-        <li><article><p>第四章 · 传火</p><h3>龙抬头</h3><p>压轴菜上桌——东方巨龙走的，是和平的正道。</p></article></li>
-      </ol>
-    </section>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    <!-- ============ 核心意象 ============ -->
-    <section class="symbol-handoff" id="symbols" aria-labelledby="symbol-title">
-      <header class="symbol-heading">
-        <p class="eyebrow">THE WEIGHT OF SMALL THINGS</p>
-        <h2 id="symbol-title">三件小东西</h2>
-        <p>道具即命运——从"毒"到"救"，从"饭"到"家"，从"衔弹"到"抬头"。</p>
-      </header>
-      <div class="symbol-story">
-        <div class="symbol-title-rail" aria-hidden="true">
-          <p data-symbol-art-title data-title-state="potato"><span>发芽<br>土豆</span><span>一碗<br>烩饭</span><span>龙口<br>衔弹</span></p>
-        </div>
-        <div class="symbol-beats">
-          <article class="symbol-beat" data-symbol-beat data-title-state="potato">
-            <figure><img data-media="potato.jpg" alt="一堆发芽的土豆" loading="lazy" decoding="async"></figure>
-            <div>
-              <p class="symbol-count">01 / POTATO</p>
-              <h3>发芽土豆</h3>
-              <p>和平年代是厨师必须丢弃的毒物，战乱中却成了拯救孩子的药。从"毒"到"救"，首尾呼应的救赎。</p>
-            </div>
-          </article>
-          <article class="symbol-beat" data-symbol-beat data-title-state="rice">
-            <figure><img data-media="rice-2.jpg" alt="一碗热气腾腾的烩饭" loading="lazy" decoding="async"></figure>
-            <div>
-              <p class="symbol-count">02 / RICE</p>
-              <h3>徐福烩饭</h3>
-              <p>被自嘲"上不了台面"的便饭写进菜单。最普通的食材，做出"家的味道"。</p>
-            </div>
-          </article>
-          <article class="symbol-beat" data-symbol-beat data-title-state="dragon">
-            <figure>
-              <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="龙口衔子弹图形">
-                <path d="M 130 40 C 115 30, 95 28, 82 38 C 70 48, 65 63, 72 76 C 80 90, 90 94, 85 106 C 80 118, 65 123, 50 120 C 35 117, 28 107, 25 93"
-                  stroke="#C49B6C" stroke-width="1.6" opacity="0.5" stroke-linecap="round" fill="none"/>
-                <g opacity="0.62">
-                  <path d="M 24 93 L 21 83 L 26 75 L 34 74 L 39 79 L 37 89 L 30 95 Z"
-                    fill="#6B1B1E" opacity="0.5" stroke="#8a2a2c" stroke-width="0.7"/>
-                  <path d="M 30 75 L 27 67 L 25 62" stroke="#C49B6C" stroke-width="1.2" opacity="0.45" fill="none" stroke-linecap="round"/>
-                  <path d="M 34 74 L 36 66 L 38 60" stroke="#C49B6C" stroke-width="1.2" opacity="0.45" fill="none" stroke-linecap="round"/>
-                  <circle cx="31" cy="83" r="1.4" fill="#D4602A" opacity="0.65"/>
-                </g>
-                <g opacity="0.75">
-                  <ellipse cx="50" cy="88" rx="8" ry="2.5" fill="#8B7355" opacity="0.55"/>
-                  <path d="M 57 85.8 C 61 86.5, 64 88, 64 88 C 64 88, 61 89.5, 57 90.2 L 57 85.8 Z" fill="#C49B6C" opacity="0.6"/>
-                  <ellipse cx="44" cy="88" rx="1.5" ry="2.2" fill="#6B5340" opacity="0.5"/>
-                </g>
-                <g opacity="0.22">
-                  <line x1="110" y1="35" x2="113" y2="32" stroke="#C49B6C" stroke-width="0.6"/>
-                  <line x1="100" y1="36" x2="103" y2="33" stroke="#C49B6C" stroke-width="0.6"/>
-                  <line x1="89" y1="40" x2="92" y2="37" stroke="#C49B6C" stroke-width="0.6"/>
-                  <line x1="79" y1="48" x2="82" y2="45" stroke="#C49B6C" stroke-width="0.6"/>
-                  <line x1="71" y1="60" x2="74" y2="57" stroke="#C49B6C" stroke-width="0.6"/>
-                  <line x1="70" y1="76" x2="73" y2="73" stroke="#C49B6C" stroke-width="0.6"/>
-                  <line x1="82" y1="106" x2="85" y2="103" stroke="#C49B6C" stroke-width="0.6"/>
-                  <line x1="62" y1="122" x2="65" y2="119" stroke="#C49B6C" stroke-width="0.6"/>
-                </g>
-                <circle cx="80" cy="80" r="52" stroke="#6B1B1E" stroke-width="0.4" opacity="0.1" fill="none" stroke-dasharray="2 3"/>
-              </svg>
-            </figure>
-            <div>
-              <p class="symbol-count">03 / DRAGON</p>
-              <h3>龙口衔弹</h3>
-              <p>龙玩偶口衔子弹——含住未咽，吐又不敢。烟火与硝烟的符号碰撞，全片精神的缩影。</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 尾声 ============ -->
-    <section class="epilogue" id="epilogue" data-epilogue aria-labelledby="epilogue-title">
-      <div class="epilogue-scene">
-        <div class="epilogue-final">
-          <div class="epilogue-video-frame">
-            <img class="epilogue-final-img" data-media="war.jpg" alt="战火中的龙餐馆" loading="lazy" decoding="async">
-          </div>
-          <div class="epilogue-final-copy">
-            <p class="eyebrow">A FILM BY WEN MUYE</p>
-            <h2 id="epilogue-title">
-              <span class="epilogue-welcome-line">欢迎观看</span>
-              <span class="epilogue-film-line">《欢迎来龙餐馆》</span>
-            </h2>
-            <p class="epilogue-slogan">能吃饭，就别打仗</p>
-            <p class="epilogue-credits">
-              文牧野 导演 · 宁浩 监制 · 沈腾 蒋奇明 主演<br>
-              2026.08.11 全国上映 · <b>豆瓣 8.7 · 淘票票 9.9 · 票房 16亿+</b>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    window.__DRAGON_MEDIA__ = {
-      "xufu.jpg": "images/opt/xufu.jpg",
-      "majunsheng.jpg": "images/opt/majunsheng.jpg",
-      "xufu-2.jpg": "images/opt/xufu-2.jpg",
-      "daily.jpg": "images/opt/daily.jpg",
-      "fire.jpg": "images/opt/fire.jpg",
-      "potato.jpg": "images/opt/potato.jpg",
-      "rice.jpg": "images/opt/rice.jpg",
-      "rice-2.jpg": "images/opt/rice-2.jpg",
-      "dragon-rise.jpg": "images/opt/dragon-rise.jpg",
-      "war.jpg": "images/opt/war.jpg"
-    };
-  </script>
-
-  <script>(() => {
-    "use strict";
-
-    const $ = (selector, root = document) => (
-      typeof root?.querySelectorAll === "function" ? [...root.querySelectorAll(selector)] : []
-    );
-    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
-
-    const clampIndex = (index, length) => Math.max(0, Math.min(Math.max(0, length - 1), index));
-    const stepIndex = (current, length, delta, loop) => {
-      if (length <= 0) return 0;
-      if (!loop) return clampIndex(current + delta, length);
-      return ((current + delta) % length + length) % length;
-    };
-    const directionBetween = (current, next, length, loop) => {
-      if (current === next) return 0;
-      if (loop && current === length - 1 && next === 0) return 1;
-      if (loop && current === 0 && next === length - 1) return -1;
-      return next > current ? 1 : -1;
-    };
-    const createInputLock = () => {
-      let locked = false;
-      return {
-        isLocked: () => locked,
-        lock: () => { if (locked) return false; locked = true; return true; },
-        release: () => { locked = false; }
-      };
-    };
-    const pad = (n) => String(n + 1).padStart(2, "0");
-
-    function hydrateMedia() {
-      const media = window.__DRAGON_MEDIA__ || {};
-      $("[data-media]").forEach((node) => {
-        const source = media[node.dataset.media];
-        if (!source) return;
-        node.src = source;
-        node.decoding = "async";
-        if (node.closest?.(".hero")) node.fetchPriority = "high";
-        else node.loading = node.loading || "lazy";
-      });
+  /* marquee items: duplicate for seamless loop */
+  var words = [
+    '沉浸式 HTML','AI 创作','视觉基因转译','动效库 22 种','文字拆分揭幕',
+    '3D Coverflow','弹性剧照墙','Glitch / RGB','滚动叙事','GitHub Pages','单文件发布'
+  ];
+  var track = document.getElementById('marquee');
+  var html = '';
+  for (var r = 0; r < 2; r++) {
+    for (var i = 0; i < words.length; i++) {
+      html += '<span class="item">' + words[i] + '</span>';
     }
+  }
+  track.innerHTML = html;
 
-    /* ---------- 动能开场 ---------- */
-    function setupIntro() {
-      const intro = document.querySelector("[data-kinetic-intro]");
-      if (!intro) return;
-      const finish = () => {
-        intro.classList.add("is-finished");
-        document.body.classList.remove("intro-running");
-      };
-      if (reduceMotion) return finish();
-      const exitAt = 1650;
-      const doneAt = 2450;
-      window.setTimeout(() => intro.classList.add("is-exiting"), exitAt);
-      window.setTimeout(finish, doneAt);
-    }
-
-    /* ---------- 逐字标题 ---------- */
-    function splitMotionTitle(title) {
-      const lines = $("[data-motion-line]", title);
-      const label = (title.getAttribute?.("aria-label") || title.textContent).replace(/\s+/g, " ").trim();
-      if (!label) return;
-      title.setAttribute("aria-label", label);
-      const containers = lines.length ? lines : [title];
-      let glyphIndex = 0;
-      containers.forEach((line) => {
-        const chars = [...line.textContent.trim()];
-        line.textContent = "";
-        chars.forEach((char) => {
-          if (char === " ") {
-            line.append(" ");
-            return;
-          }
-          const glyph = document.createElement("span");
-          glyph.className = "motion-glyph";
-          glyph.style.setProperty("--motion-index", glyphIndex++);
-          glyph.textContent = char;
-          line.append(glyph);
-        });
-      });
-      title.classList.add("is-motion-ready");
-    }
-
-    function setupMotionTitles() {
-      const titles = $("[data-motion-title]");
-      titles.forEach(splitMotionTitle);
-      if (reduceMotion || typeof window.IntersectionObserver !== "function") {
-        titles.forEach((title) => title.classList.add("is-visible"));
-        return;
+  /* reveal on scroll */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
       }
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        });
-      }, { threshold: .34 });
-      titles.forEach((title) => observer.observe(title));
-    }
-
-    /* ---------- 反射桥 ---------- */
-    function setupReflection() {
-      const track = document.querySelector("[data-reflection-track]");
-      const primaryRail = document.querySelector("[data-reflection-primary]");
-      const mirrorRail = document.querySelector("[data-reflection-mirror]");
-      if (!track || !primaryRail || !mirrorRail) return;
-
-      function updateReflection() {
-        const rect = track.getBoundingClientRect();
-        const travel = Math.max(track.offsetHeight - window.innerHeight, 1);
-        const progress = Math.min(1, Math.max(0, -rect.top / travel));
-        const maxShift = Math.max(primaryRail.scrollWidth - window.innerWidth * .9, window.innerWidth * .18);
-        primaryRail.style.transform = `translate3d(${-progress * maxShift}px,0,0)`;
-        mirrorRail.style.transform = `translate3d(${-progress * maxShift * .91}px,0,0) scaleY(-1)`;
-      }
-
-      if (reduceMotion) return updateReflection();
-      let frame = 0;
-      const schedule = () => {
-        if (frame) return;
-        frame = window.requestAnimationFrame(() => {
-          frame = 0;
-          updateReflection();
-        });
-      };
-      window.addEventListener("scroll", schedule, { passive: true });
-      window.addEventListener("resize", schedule);
-      updateReflection();
-    }
-
-    /* ---------- 通用视觉卡组 ---------- */
-    function createVisualDeck({ root, items, loop = false, render, duration = 760 }) {
-      if (!root || !Array.isArray(items) || !items.length) return null;
-      const inputLock = createInputLock();
-      let currentIndex = 0;
-
-      const animate = ({ direction }) => new Promise((resolve) => {
-        const incoming = $(".deck-layer.is-next", root)[0];
-        let settled = false;
-        const done = () => {
-          if (settled) return;
-          settled = true;
-          incoming?.removeEventListener("animationend", done);
-          window.clearTimeout(timer);
-          resolve();
-        };
-        const timer = window.setTimeout(done, duration + 120);
-        incoming?.addEventListener("animationend", done, { once: true });
-        root.classList.remove("is-forward", "is-reverse");
-        void root.offsetWidth;
-        root.classList.add(direction >= 0 ? "is-forward" : "is-reverse");
-      });
-
-      const go = async (requestedIndex) => {
-        const nextIndex = stepIndex(currentIndex, items.length, requestedIndex - currentIndex, loop);
-        if (nextIndex === currentIndex || !inputLock.lock()) return false;
-        const previousIndex = currentIndex;
-        const direction = directionBetween(previousIndex, nextIndex, items.length, loop);
-        try {
-          render({ index: nextIndex, previousIndex, direction, phase: "prepare" });
-          await animate({ index: nextIndex, previousIndex, direction });
-        } finally {
-          currentIndex = nextIndex;
-          render({ index: currentIndex, previousIndex, direction, phase: "commit" });
-          inputLock.release();
-        }
-        return true;
-      };
-
-      return {
-        go,
-        next: () => go(stepIndex(currentIndex, items.length, 1, loop)),
-        prev: () => go(stepIndex(currentIndex, items.length, -1, loop)),
-        index: () => currentIndex
-      };
-    }
-
-    /* ---------- 人物分镜 ---------- */
-    function setupCastDeck() {
-      const root = document.querySelector("[data-cast-deck]");
-      if (!root) return;
-      const media = window.__DRAGON_MEDIA__ || {};
-      const items = [
-        {
-          scene: "SCENE 01 · THE COOK",
-          name: "徐福",
-          credit: "沈腾 饰 · Shen Teng",
-          role: "龙餐馆主厨",
-          image: "xufu.jpg",
-          visualNote: "后厨掌勺的徐福",
-          line: "从只想赚钱还债的普通人，到火线守护孤儿的\u201c父亲\u201d——锅铲就是他的武器。"
-        },
-        {
-          scene: "SCENE 02 · THE MANAGER",
-          name: "马俊生",
-          credit: "蒋奇明 饰 · Jiang Qiming",
-          role: "大堂经理",
-          image: "majunsheng.jpg",
-          visualNote: "八面玲珑的经理人",
-          line: "用发芽土豆救孩子，牺牲前留下一句\u201c没糊弄过去\u201d。"
-        }
-      ];
-
-      const currentImg = $("[data-cast-image-current]", root)[0];
-      const nextImg = $("[data-cast-image-next]", root)[0];
-      const copyWrap = $("[data-cast-copy-wrap]", root)[0];
-      const indexEl = $("[data-cast-index]", root)[0];
-      const liveEl = $("[data-cast-live]", root)[0];
-      const dots = $("[data-cast-dot]", root);
-      const currentLayer = $(".deck-layer.is-current", root)[0];
-      const nextLayer = $(".deck-layer.is-next", root)[0];
-
-      const setCopy = (item) => {
-        const fields = { scene: "scene", name: "name", credit: "credit", role: "role", line: "line" };
-        Object.entries(fields).forEach(([key, dataKey]) => {
-          const node = root.querySelector(`[data-cast-copy="${dataKey}"]`);
-          if (node) node.textContent = item[key];
-        });
-        const note = $("[data-cast-visual-note]", root)[0];
-        if (note) note.textContent = item.visualNote;
-      };
-
-      const deck = createVisualDeck({
-        root,
-        items,
-        loop: true,
-        render: ({ index, phase }) => {
-          const item = items[index];
-          if (phase === "prepare") {
-            nextImg.src = media[item.image] || "";
-            root.classList.remove("is-copy-entering");
-            void copyWrap.offsetWidth;
-          } else {
-            currentImg.src = media[item.image] || "";
-            setCopy(item);
-            root.classList.add("is-copy-entering");
-            indexEl.textContent = `${pad(index)} / ${pad(items.length - 1)}`;
-            dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
-            liveEl.textContent = `${item.name}，${item.credit}，${item.role}。`;
-            currentLayer.classList.add("is-current");
-            nextLayer.classList.remove("is-current");
-          }
-        }
-      });
-
-      if (!deck) return;
-      const item = items[0];
-      currentImg.src = media[item.image] || "";
-      setCopy(item);
-      indexEl.textContent = `${pad(0)} / ${pad(items.length - 1)}`;
-      dots[0]?.classList.add("is-active");
-      liveEl.textContent = `${item.name}，${item.credit}，${item.role}。`;
-
-      $("[data-cast-next]", root).forEach((b) => b.addEventListener("click", () => deck.next()));
-      $("[data-cast-prev]", root).forEach((b) => b.addEventListener("click", () => deck.prev()));
-      dots.forEach((dot, i) => dot.addEventListener("click", () => deck.go(i)));
-      root.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowRight") { event.preventDefault(); deck.next(); }
-        if (event.key === "ArrowLeft") { event.preventDefault(); deck.prev(); }
-      });
-    }
-
-    /* ---------- 故事四幕 ---------- */
-    function setupStoryDeck() {
-      const root = document.querySelector("[data-story-deck]");
-      if (!root) return;
-      const media = window.__DRAGON_MEDIA__ || {};
-      const items = [
-        {
-          scene: "ACT 01 · 日常",
-          subtitle: "开火之前 · Before the Storm",
-          chapter: "第一章 · 开火",
-          title: "好好吃饭",
-          image: "daily.jpg",
-          caption: "巴哈塔的日常：后厨的火、餐桌上的饱，是一家餐馆全部的体面。"
-        },
-        {
-          scene: "ACT 02 · 战争",
-          subtitle: "断火之时 · The Storm Arrives",
-          chapter: "第二章 · 断火",
-          title: "战火骤至",
-          image: "war.jpg",
-          caption: "炮火撕开街区，餐馆成了废墟里还亮着灯的地方。"
-        },
-        {
-          scene: "ACT 03 · 一碗饭",
-          subtitle: "续火之人 · The Humble Bowl",
-          chapter: "第三章 · 续火",
-          title: "徐福烩饭",
-          image: "rice.jpg",
-          caption: "自嘲\u201c上不了台面\u201d的一碗饭，写进了菜单，也写进了人心。"
-        },
-        {
-          scene: "ACT 04 · 龙抬头",
-          subtitle: "传火之路 · The Path of Peace",
-          chapter: "第四章 · 传火",
-          title: "龙抬头",
-          image: "dragon-rise.jpg",
-          caption: "压轴菜上桌——东方巨龙走的，是和平的正道。"
-        }
-      ];
-
-      const currentImg = $("[data-story-image-current]", root)[0];
-      const nextImg = $("[data-story-image-next]", root)[0];
-      const copyWrap = $("[data-story-copy-wrap]", root)[0];
-      const indexEl = $("[data-story-index]", root)[0];
-      const progressEl = $("[data-story-progress]", root)[0];
-      const liveEl = $("[data-story-live]", root)[0];
-      const prevBtn = $("[data-story-prev]", root)[0];
-      const nextBtn = $("[data-story-next]", root)[0];
-      const currentLayer = $(".deck-layer.is-current", root)[0];
-      const nextLayer = $(".deck-layer.is-next", root)[0];
-
-      const setCopy = (item) => {
-        ["scene", "subtitle", "chapter", "title", "caption"].forEach((key) => {
-          const node = root.querySelector(`[data-story-copy="${key}"]`);
-          if (node) node.textContent = item[key];
-        });
-      };
-
-      const syncControls = (index) => {
-        indexEl.textContent = `${pad(index)} / ${pad(items.length - 1)}`;
-        progressEl.style.width = `${((index + 1) / items.length) * 100}%`;
-        if (prevBtn) {
-          prevBtn.disabled = index === 0;
-          prevBtn.setAttribute("aria-disabled", String(index === 0));
-        }
-        if (nextBtn) {
-          nextBtn.disabled = index === items.length - 1;
-          nextBtn.setAttribute("aria-disabled", String(index === items.length - 1));
-        }
-      };
-
-      const deck = createVisualDeck({
-        root,
-        items,
-        loop: false,
-        render: ({ index, phase }) => {
-          const item = items[index];
-          if (phase === "prepare") {
-            nextImg.src = media[item.image] || "";
-            root.classList.remove("is-copy-entering");
-            void copyWrap.offsetWidth;
-          } else {
-            currentImg.src = media[item.image] || "";
-            setCopy(item);
-            root.classList.add("is-copy-entering");
-            syncControls(index);
-            liveEl.textContent = `${item.chapter}，${item.title}。${item.caption}`;
-            currentLayer.classList.add("is-current");
-            nextLayer.classList.remove("is-current");
-          }
-        }
-      });
-
-      if (!deck) return;
-      const first = items[0];
-      currentImg.src = media[first.image] || "";
-      setCopy(first);
-      syncControls(0);
-      liveEl.textContent = `${first.chapter}，${first.title}。`;
-
-      nextBtn?.addEventListener("click", () => deck.next());
-      prevBtn?.addEventListener("click", () => deck.prev());
-      root.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowRight") { event.preventDefault(); deck.next(); }
-        if (event.key === "ArrowLeft") { event.preventDefault(); deck.prev(); }
-      });
-    }
-
-    /* ---------- 核心意象 beats ---------- */
-    function setupSymbolBeats() {
-      const beats = $("[data-symbol-beat]");
-      const artTitle = document.querySelector("[data-symbol-art-title]");
-      if (!beats.length || !artTitle) return;
-      if (typeof window.IntersectionObserver !== "function") {
-        beats.forEach((beat) => beat.classList.add("is-active"));
-        return;
-      }
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          beats.forEach((beat) => beat.classList.toggle("is-active", beat === entry.target));
-          artTitle.dataset.titleState = entry.target.dataset.titleState || "potato";
-        });
-      }, { threshold: .5 });
-      beats.forEach((beat) => observer.observe(beat));
-    }
-
-    /* ---------- 尾声 ---------- */
-    function setupEpilogue() {
-      const epilogue = document.querySelector("[data-epilogue]");
-      if (!epilogue) return;
-      if (typeof window.IntersectionObserver !== "function") {
-        epilogue.classList.add("is-complete");
-        return;
-      }
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          epilogue.classList.add("is-fading");
-          window.setTimeout(() => epilogue.classList.add("is-complete"), 820);
-          observer.disconnect();
-        });
-      }, { threshold: .5 });
-      observer.observe(epilogue);
-    }
-
-    function init() {
-      hydrateMedia();
-      setupIntro();
-      setupMotionTitles();
-      setupReflection();
-      setupCastDeck();
-      setupStoryDeck();
-      setupSymbolBeats();
-      setupEpilogue();
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init, { once: true });
-    } else {
-      init();
-    }
-  })();
-  </script>
+    });
+  }, {threshold:.18, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  /* the feature card starts in view sometimes; force check on load */
+  window.addEventListener('load', function(){
+    document.querySelectorAll('.reveal').forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * .92) el.classList.add('in');
+    });
+  });
+  /* if reduced motion, instantly reveal all to avoid stuck invisible */
+  if (reduce) {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
 </body>
 </html>
