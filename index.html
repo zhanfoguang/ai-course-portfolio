@@ -369,11 +369,83 @@
         </div>
       </a>
 
+      <!-- Work 02 : V-TWIN 1103 Engine -->
+      <a class="card reveal d1" href="./works/v-twin-1103-engine/index.html" style="grid-column:span 12;">
+        <div class="card-cover">
+          <span class="cover-tag">WORK 02 · 交互式三维爆炸图</span>
+          <svg viewBox="0 0 640 520" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="eg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#14171d"/>
+                <stop offset=".55" stop-color="#222932"/>
+                <stop offset="1" stop-color="#333d49"/>
+              </linearGradient>
+              <radialGradient id="ehalo" cx=".5" cy=".55" r=".62">
+                <stop offset="0" stop-color="#e3c98f" stop-opacity=".34"/>
+                <stop offset="1" stop-color="#e3c98f" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="640" height="520" fill="url(#eg)"/>
+            <rect width="640" height="520" fill="url(#ehalo)"/>
+            <!-- 爆炸引导轴：两条 ±45° 缸轴 + 一条竖直主轴 -->
+            <g stroke="#c8a878" stroke-width="1" stroke-dasharray="4 7" opacity=".38">
+              <line x1="320" y1="300" x2="150" y2="130"/>
+              <line x1="320" y1="300" x2="490" y2="130"/>
+              <line x1="320" y1="300" x2="320" y2="470"/>
+            </g>
+            <!-- 90° V 型双缸：同一组缸体绕曲轴中心 ±45° 展开 -->
+            <g fill="#1b2028" stroke="#e3c98f" stroke-width="2.2" stroke-linecap="round">
+              <g transform="rotate(-45 320 300)">
+                <rect x="292" y="150" width="56" height="96" rx="8" opacity=".92"/>
+                <rect x="284" y="112" width="72" height="34" rx="7" opacity=".8"/>
+                <rect x="299" y="256" width="42" height="26" rx="4" opacity=".7"/>
+              </g>
+              <g transform="rotate(45 320 300)">
+                <rect x="292" y="150" width="56" height="96" rx="8" opacity=".92"/>
+                <rect x="284" y="112" width="72" height="34" rx="7" opacity=".8"/>
+                <rect x="299" y="256" width="42" height="26" rx="4" opacity=".7"/>
+              </g>
+            </g>
+            <!-- 曲轴箱与曲柄销 -->
+            <g fill="none" stroke="#e3c98f" stroke-width="2.4">
+              <circle cx="320" cy="300" r="40" fill="#1b2028" opacity=".95"/>
+              <circle cx="320" cy="300" r="17" opacity=".7"/>
+            </g>
+            <g fill="#c8a878" opacity=".85">
+              <circle cx="320" cy="300" r="4.5"/>
+              <circle cx="272" cy="252" r="5"/>
+              <circle cx="368" cy="252" r="5"/>
+            </g>
+            <!-- 工程标注引线（呼应作品内的标注系统） -->
+            <g stroke="#c8a878" stroke-width="1.3" opacity=".55" fill="none">
+              <polyline points="196,150 150,124 96,124"/>
+              <polyline points="444,150 490,124 548,124"/>
+              <polyline points="320,404 380,436 452,436"/>
+            </g>
+            <g fill="#e3c98f" opacity=".8">
+              <circle cx="196" cy="150" r="3.2"/>
+              <circle cx="444" cy="150" r="3.2"/>
+              <circle cx="320" cy="404" r="3.2"/>
+            </g>
+            <text x="36" y="486" font-family="serif" font-size="15" fill="#e9d7b8" opacity=".8" letter-spacing="6">V-TWIN 1103</text>
+            <text x="36" y="508" font-family="monospace" font-size="9" fill="#e9d7b8" opacity=".5" letter-spacing="3">90&#176; V-TWIN ENGINE &#183; 3D EXPLODED VIEW &#183; 27 PARTS</text>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-no">N&#176; 02 &#8212; 机械结构 &#183; 实时三维爆炸图</div>
+          <h3><span class="zh">V-TWIN 1103</span><br>摩托车发动机三维爆炸图</h3>
+          <p>90&#176; V 型双缸发动机的可交互结构演示：拖动滑块即可把 27 个零件沿装配轴连续拆开，<b style="color:var(--gold-bright)">拆解过程中曲柄连杆机构仍在实时运转</b>；配备工程制图标注系统，标注会自动避让、淡出被遮挡的零件，画面始终保持稳定不抖。</p>
+          <div class="chips">
+            <span class="chip">WebGL / three.js</span>
+            <span class="chip">运动学求解</span>
+            <span class="chip">标注避让算法</span>
+            <span class="chip">单文件发布</span>
+          </div>
+          <span class="card-link">打开作品 <span class="arrow">&#8594;</span></span>
+        </div>
+      </a>
+
       <!-- placeholders -->
-      <div class="placeholder reveal d1">
-        <div class="ph-no">WORK 02</div>
-        <h4>下次作业 · 敬请期待</h4>
-      </div>
       <div class="placeholder reveal d2">
         <div class="ph-no">WORK 03</div>
         <h4>下次作业 · 敬请期待</h4>
