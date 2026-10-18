@@ -12,7 +12,7 @@
 |------|------|------|------|
 | 01 | 《欢迎来龙餐馆》电影宣传页 | 电影主题 · 单页沉浸式 HTML（开场动能标题 / 弹性剧照墙 / 3D 角色卡 / 核心意象锚点 / 胶片致谢名单），可离线单文件 | [`works/dragon-restaurant/`](./works/dragon-restaurant/index.html) |
 | 02 | V-TWIN 1103 摩托车发动机三维爆炸图 | 机械结构 · 交互式三维爆炸图（27 个零件沿装配轴连续拆解 / 拆解过程中曲柄连杆机构仍实时运转 / 工程标注自动避让与遮挡淡出 / 单文件发布，three.js 由 CDN 加载） | [`works/v-twin-1103-engine/`](./works/v-twin-1103-engine/index.html) |
-| 03 | — | 敬请期待 | — |
+| 03 | 工业智能大脑与肢体 | 课程汇报 · 配图版 PPT（43 页 / 23 MB）：从智能制造四类岗位需求出发，串起精益生产、PLM/MES、机器视觉、工业物联网、工业机器人、Python、AI 智能体九门课，含壳体线实战案例与数字孪生 | [`works/industrial-ai-brain-body/`](./works/industrial-ai-brain-body/) |
 
 ## 🧭 目录结构
 
@@ -22,8 +22,10 @@ ai-course-portfolio/
 ├── works/                        # 课程作业归档
 │   ├── dragon-restaurant/
 │   │   └── index.html            # 作业 01：沉浸式电影宣传页（自包含单文件）
-│   └── v-twin-1103-engine/
-│       └── index.html            # 作业 02：90° V 型双缸发动机三维爆炸图（WebGL 实时）
+│   ├── v-twin-1103-engine/
+│   │   └── index.html            # 作业 02：90° V 型双缸发动机三维爆炸图（WebGL 实时）
+│   └── industrial-ai-brain-body/
+│       └── 工业智能大脑与肢体_配图版v2.pptx   # 作业 03：课程汇报演示文稿
 └── README.md
 ```
 
